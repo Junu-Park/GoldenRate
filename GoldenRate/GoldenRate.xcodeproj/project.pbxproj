@@ -14,7 +14,7 @@
 		510AB33F2D92C7D6004F23C7 /* Exceptions for "GoldenRate" folder in "GoldenRate" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				App/Info.plist,
 			);
 			target = 510AB32C2D92C7D3004F23C7 /* GoldenRate */;
 		};
@@ -147,7 +147,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6UR3X5MRY6;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GoldenRate/Info.plist;
+				INFOPLIST_FILE = GoldenRate/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -175,7 +175,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6UR3X5MRY6;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GoldenRate/Info.plist;
+				INFOPLIST_FILE = GoldenRate/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
