@@ -39,7 +39,7 @@ struct SavingProductInfo: Decodable {
     let productCode: String
     let companyName: String
     let productName: String
-    let join_way: String
+    let join_way: String?
     let mtrt_int: String
     let preferentialCondition: String
     let joinRestrict: String
