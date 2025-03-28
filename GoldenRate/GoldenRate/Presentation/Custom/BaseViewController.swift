@@ -9,6 +9,10 @@ import UIKit
 
 class BaseViewController: UIViewController, ConfigureProtocol {
     
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -16,6 +20,7 @@ class BaseViewController: UIViewController, ConfigureProtocol {
         self.configureHierarchy()
         self.configureLayout()
         self.configureView()
+        self.bind()
     }
     
     private func configureDefaultSetting() {
@@ -27,4 +32,11 @@ class BaseViewController: UIViewController, ConfigureProtocol {
     func configureLayout() { }
     
     func configureView() { }
+    
+    func bind() { }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
