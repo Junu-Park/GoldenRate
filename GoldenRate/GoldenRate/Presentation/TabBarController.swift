@@ -23,7 +23,9 @@ final class TabBarController: UITabBarController {
         self.tabBar.tintColor = .defaultText
         self.tabBar.backgroundColor = .defaultBackground
         
-        let homeVC = HomeViewController()
+        let homeRepo = MockHomeRepository()
+        let homeVM = HomeViewModel(repository: homeRepo)
+        let homeVC = HomeViewController(viewModel: homeVM)
         let homeTab = UITabBarItem(title: StringConstant.homeTabTitle.localized(), image: .home, tag: 0)
         homeTab.setTitleTextAttributes([.font: UIFont.bold10], for: .normal)
         homeVC.tabBarItem = homeTab
