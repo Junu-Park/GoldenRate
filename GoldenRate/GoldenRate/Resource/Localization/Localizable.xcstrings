@@ -2,6 +2,7 @@
   "sourceLanguage" : "ko",
   "strings" : {
     "calculatorTabTitle" : {
+      "comment" : "계산기탭 타이틀",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -18,7 +19,11 @@
         }
       }
     },
+    "Date" : {
+      "comment" : "LabelKey로 사용"
+    },
     "homeTabTitle" : {
+      "comment" : "홈탭 타이틀",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -36,6 +41,7 @@
       }
     },
     "moreTabTitle" : {
+      "comment" : "더보기탭 타이틀",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -52,7 +58,11 @@
         }
       }
     },
+    "Rate" : {
+      "comment" : "LabelKey로 사용"
+    },
     "searchTabTitle" : {
+      "comment" : "찾기탭 타이틀",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -68,6 +78,9 @@
           }
         }
       }
+    },
+    "Type" : {
+      "comment" : "LabelKey로 사용"
     }
   },
   "version" : "1.0"
