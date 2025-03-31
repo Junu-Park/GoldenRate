@@ -14,6 +14,7 @@ struct DepositProductEntity {
     let companyName: String
     let joinWay: [String]
     let preferentialCondition: String
+    let joinRestirct: JoinRestrictType
     let joinTarget: String
     let note: String
     let rateMethod: String
