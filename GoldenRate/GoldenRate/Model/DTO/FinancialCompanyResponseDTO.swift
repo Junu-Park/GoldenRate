@@ -1,5 +1,5 @@
 //
-//  CompanyInfoResponseDTO.swift
+//  FinancialCompanyInfoResponseDTO.swift
 //  GoldenRate
 //
 //  Created by 박준우 on 3/31/25.
@@ -7,19 +7,19 @@
 
 import Foundation
 
-struct CompanyInfoResponseDTO: Decodable {
-    let result: CompanyInfoResult
+struct FinancialCompanyResponseDTO: Decodable {
+    let result: FinancialCompanyResult
 }
 
-struct CompanyInfoResult: Decodable {
+struct FinancialCompanyResult: Decodable {
     let prdt_div: String
     let total_count: Int
     let max_page_no: Int
     let now_page_no: Int
     let err_cd: String
     let err_msg: String
-    let companyInfoList: [CompanyInfo]
-    let optionList: [CompanyBranchInfo]
+    let financialCompanyInfoList: [FinancialCompanyInfo]
+    let optionList: [FinancialCompanyBranchInfo]
     
     enum CodingKeys: String, CodingKey {
         case prdt_div
@@ -28,12 +28,12 @@ struct CompanyInfoResult: Decodable {
         case now_page_no
         case err_cd
         case err_msg
-        case companyInfoList = "baseList"
+        case financialCompanyInfoList = "baseList"
         case optionList
     }
 }
 
-struct CompanyInfo: Decodable {
+struct FinancialCompanyInfo: Decodable {
     let dcls_month: String
     let companyCode: String
     let companyName: String
@@ -51,7 +51,7 @@ struct CompanyInfo: Decodable {
     }
 }
 
-struct CompanyBranchInfo: Decodable {
+struct FinancialCompanyBranchInfo: Decodable {
     let dcls_month: String
     let fin_co_no: String
     let area_cd: String
