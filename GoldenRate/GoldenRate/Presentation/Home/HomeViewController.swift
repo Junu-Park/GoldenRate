@@ -46,14 +46,32 @@ final class HomeViewController: BaseViewController {
     override func bind() {
         
         let getRateChartData = CurrentValueSubject<Void, Never>(())
+        let getDepositProductTopData = CurrentValueSubject<Void, Never>(())
+        let getSavingProductTopData = CurrentValueSubject<Void, Never>(())
         
-        let input = HomeViewModel.Input(getRateChartData: getRateChartData.eraseToAnyPublisher())
+        let input = HomeViewModel.Input(getRateChartData: getRateChartData.eraseToAnyPublisher(), getDepositProductTopData: getDepositProductTopData.eraseToAnyPublisher(), getSavingProductTopData: getSavingProductTopData.eraseToAnyPublisher())
         
         let output = self.viewModel.tranform(input: input)
         
         output.rateChartData
             .sink { [weak self] data in
                 self?.chartViewController.rootView = .init(rateDataList: data)
+            }
+            .store(in: &self.cancellable)
+        
+        output.depositProductTopData
+            .sink { [weak self] data in
+                print("-------")
+                print(data)
+                print("-------")
+            }
+            .store(in: &self.cancellable)
+        
+        output.savingProductTopData
+            .sink { [weak self] data in
+                print("-------")
+                print(data)
+                print("-------")
             }
             .store(in: &self.cancellable)
     }
