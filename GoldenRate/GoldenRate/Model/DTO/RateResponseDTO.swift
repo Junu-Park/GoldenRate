@@ -16,23 +16,45 @@ struct RateResponseDTO: Decodable {
 }
 
 struct StatisticSearch: Decodable {
-    let list_total_count: Int
+    let listTotalCount: Int
     let row: [StatisticSearchRow]
+    
+    enum CodingKeys: String, CodingKey {
+        case listTotalCount = "list_total_count"
+        case row
+    }
 }
-/// ex. TIME: "202503" / DATA_VALUE: "3"
+
 struct StatisticSearchRow: Decodable {
-    let STAT_CODE: String
-    let STAT_NAME: String
-    let ITEM_CODE1: String
-    let ITEM_NAME1: String
-    let ITEM_CODE2: String?
-    let ITEM_NAME2: String?
-    let ITEM_CODE3: String?
-    let ITEM_NAME3: String?
-    let ITEM_CODE4: String?
-    let ITEM_NAME4: String?
-    let UNIT_NAME: String
-    let WGT: String?
-    let TIME: String
-    let DATA_VALUE: String
+    let statCode: String
+    let statName: String
+    let itemCode1: String
+    let itemName1: String
+    let itemCode2: String?
+    let itemName2: String?
+    let itemCode3: String?
+    let itemName3: String?
+    let itemCode4: String?
+    let itemName4: String?
+    let unitName: String
+    let wgt: String?
+    let time: String
+    let dataValue: String
+    
+    enum CodingKeys: String, CodingKey {
+        case statCode = "STAT_CODE"
+        case statName = "STAT_NAME"
+        case itemCode1 = "ITEM_CODE1"
+        case itemName1 = "ITEM_NAME1"
+        case itemCode2 = "ITEM_CODE2"
+        case itemName2 = "ITEM_NAME2"
+        case itemCode3 = "ITEM_CODE3"
+        case itemName3 = "ITEM_NAME3"
+        case itemCode4 = "ITEM_CODE4"
+        case itemName4 = "ITEM_NAME4"
+        case unitName = "UNIT_NAME"
+        case wgt = "WGT"
+        case time = "TIME"
+        case dataValue = "DATA_VALUE"
+    }
 }
