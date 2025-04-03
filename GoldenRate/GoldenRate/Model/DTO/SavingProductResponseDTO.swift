@@ -9,6 +9,47 @@ import Foundation
 
 struct SavingProductResponseDTO: Decodable {
     let result: SavingProductResult
+    
+    func convertToEntityArray() -> [SavingProductEntity] {
+        let rateInfoList = self.result.savingProductRateInfoList
+        
+        return self.result.savingProductInfoList.map { info in
+            return SavingProductEntity(
+                id: info.productCode,
+                name: info.productName,
+                companyID: info.companyCode,
+                companyName: info.companyName,
+                joinWay: info.join_way?.split(separator: ",").map { String($0) } ?? [],
+                preferentialCondition: info.preferentialCondition,
+                joinRestrict: JoinRestrictType.init(rawValue: Int(info.joinRestrict) ?? 0) ?? .noRestrict,
+                joinTarget: info.joinTarget,
+                maxLimit: info.max_limit ?? 0,
+                interestRateType: {
+                    let isSimple = rateInfoList.first(where: { $0.productCode == info.productCode && $0.rateMethod == InterestRateType.simple.rawValue }) != nil
+                    let isCompound = rateInfoList.first(where: { $0.productCode == info.productCode && $0.rateMethod == InterestRateType.compound.rawValue }) != nil
+                    
+                    var interestRateType: [InterestRateType] = []
+                    
+                    if isSimple {
+                        interestRateType.append(.simple)
+                    }
+                    
+                    if isCompound {
+                        interestRateType.append(.compound)
+                    }
+                    
+                    return interestRateType
+                }(),
+                savingMethod: rateInfoList.first(where: { $0.productCode == info.productCode })?.savingMethod ?? "알 수 없음",
+                savingSimpleMonth: rateInfoList.filter({ $0.productCode == info.productCode && $0.rateMethod == InterestRateType.simple.rawValue }).map { Int($0.savingMonth) ?? 0 },
+                savingSimpleRateList: rateInfoList.filter({ $0.productCode == info.productCode && $0.rateMethod == InterestRateType.simple.rawValue}).reduce(into: [:]) { result, info in
+                    result[Int(info.savingMonth)!] = [info.baseRate ?? 0.0, info.highestRate ?? 0.0] },
+                savingCompoundMonth: rateInfoList.filter({ $0.productCode == info.productCode && $0.rateMethod == InterestRateType.compound.rawValue }).map { Int($0.savingMonth) ?? 0 },
+                savingCompoundRateList: rateInfoList.filter({ $0.productCode == info.productCode && $0.rateMethod == InterestRateType.compound.rawValue}).reduce(into: [:]) { result, info in
+                    result[Int(info.savingMonth)!] = [info.baseRate ?? 0.0, info.highestRate ?? 0.0] }
+            )
+        }
+    }
 }
 
 struct SavingProductResult: Decodable {
