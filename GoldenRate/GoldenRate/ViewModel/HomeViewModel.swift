@@ -34,40 +34,76 @@ final class HomeViewModel: ViewModel {
         let savingProductTopData = CurrentValueSubject<[SavingProductEntity], Never>([])
         
         input.getRateChartData
-            .sink { _ in
-                let baseRate = self.repository.getRate(type: .base).statisticSearch.row.map { RateChartEntity(date: $0.TIME.convertToYearMonthDate(), rate: Double($0.DATA_VALUE) ?? 0.0, type: .base) }
-                let firstRate = self.repository.getRate(type: .first).statisticSearch.row.map { RateChartEntity(date: $0.TIME.convertToYearMonthDate(), rate: Double($0.DATA_VALUE) ?? 0.0, type: .first) }
-                let secondRate = self.repository.getRate(type: .second).statisticSearch.row.map { RateChartEntity(date: $0.TIME.convertToYearMonthDate(), rate: Double($0.DATA_VALUE) ?? 0.0, type: .second) }
-                
-                rateChartData.send(baseRate + firstRate + secondRate)
+            .sink { [weak self] _ in
+                guard let self else {
+                    return
+                }
+                Task {
+                    do {
+                        let (baseRateDTO, firstRateDTO, secondRateDTO) = try await self.fetchRateDTO()
+                        
+                        let baseRateEntity = baseRateDTO.statisticSearch.row.map { RateChartEntity(date: $0.time.convertToYearMonthDate(), rate: Double($0.dataValue) ?? 0.0, type: .base) }
+                        let firstRateEntity = firstRateDTO.statisticSearch.row.map { RateChartEntity(date: $0.time.convertToYearMonthDate(), rate: Double($0.dataValue) ?? 0.0, type: .first) }
+                        let secondRateEntity = secondRateDTO.statisticSearch.row.map { RateChartEntity(date: $0.time.convertToYearMonthDate(), rate: Double($0.dataValue) ?? 0.0, type: .second) }
+                        
+                        rateChartData.send(baseRateEntity + firstRateEntity + secondRateEntity)
+                    } catch {
+                        // TODO: 에러처리
+                        print(error)
+                    }
+                }
             }
             .store(in: &self.cancellable)
         
         input.getDepositProductTopData
-            .sink { _ in
-                let firstDepositProductData = self.repository.getDepositProduct(type: .firstBank)
-                let firstDepositProductEntityArray = self.converToDepositProductEntityArray(data: firstDepositProductData)
-                
-                let secondDepositProduct = self.repository.getDepositProduct(type: .secondBank)
-                let secondDepositProductEntityArray = self.converToDepositProductEntityArray(data: secondDepositProduct)
-                
-                let topDepositProductEntityArray = Array((firstDepositProductEntityArray + secondDepositProductEntityArray).filter { $0.depositRateList[12] != nil }.sorted(by: { $0.depositRateList[12]!.last! > $1.depositRateList[12]!.last! })[0...2])
-                
-                depositProductTopData.send(topDepositProductEntityArray)
+            .sink { [weak self] _ in
+                guard let self else {
+                    return
+                }
+                Task {
+                    do {
+                        let (firstDepositDTO, secondDepositDTO) = try await self.fetchDepositDTO()
+                        
+                        let firstDepositEntity = firstDepositDTO.convertToEntityArray()
+                        
+                        let secondDepositEntity = secondDepositDTO.convertToEntityArray()
+                        
+                        let topDepositEntity = Array((firstDepositEntity + secondDepositEntity))
+                            .filter({ self.getMaxValue(entity: $0) != 0 })
+                            .sorted(by: { self.getMaxValue(entity: $0) > self.getMaxValue(entity: $1) })
+                        
+                        depositProductTopData.send(Array(topDepositEntity[0...2]))
+                    } catch {
+                        // TODO: 에러처리
+                        print(error)
+                    }
+                }
             }
             .store(in: &self.cancellable)
         
         input.getSavingProductTopData
-            .sink { _ in
-                let firstSavingProductData = self.repository.getSavingProduct(type: .firstBank)
-                let firstSavingProductEntityArray = self.converToSavingProductEntityArray(data: firstSavingProductData)
-                
-                let secondSavingProduct = self.repository.getSavingProduct(type: .secondBank)
-                let secondSavingProductEntityArray = self.converToSavingProductEntityArray(data: secondSavingProduct)
-                
-                let topSavingProductEntityArray = Array((firstSavingProductEntityArray + secondSavingProductEntityArray).filter { $0.savingRateList[12] != nil }.sorted(by: { $0.savingRateList[12]!.last! > $1.savingRateList[12]!.last! })[0...2])
-                
-                savingProductTopData.send(topSavingProductEntityArray)
+            .sink { [weak self] _ in
+                guard let self else {
+                    return
+                }
+                Task {
+                    do {
+                        let (firstSavingDTO, secondSavingDTO) = try await self.fetchSavingDTO()
+
+                        let firstSavingEntity = firstSavingDTO.convertToEntityArray()
+ 
+                        let secondSavingEntity = secondSavingDTO.convertToEntityArray()
+                        
+                        let topSavingEntity = Array((firstSavingEntity + secondSavingEntity))
+                            .filter({ self.getMaxValue(entity: $0) != 0 })
+                            .sorted(by: { self.getMaxValue(entity: $0) > self.getMaxValue(entity: $1) })
+                        
+                        savingProductTopData.send(Array(topSavingEntity[0...2]))
+                    } catch {
+                        // TODO: 에러처리
+                        print(error)
+                    }
+                }
             }
             .store(in: &self.cancellable)
         
@@ -76,50 +112,41 @@ final class HomeViewModel: ViewModel {
 }
 
 extension HomeViewModel {
-    private func converToDepositProductEntityArray(data: DepositProductResponseDTO) -> [DepositProductEntity] {
-        return data.result.depositProductInfoList.map { info in
-            
-            return DepositProductEntity(
-                id: info.productCode,
-                name: info.productName,
-                companyID: info.companyCode,
-                companyName: info.companyName,
-                joinWay: info.join_way.split(separator: ",").map { String($0) },
-                preferentialCondition: info.preferentialCondition,
-                joinRestirct: JoinRestrictType.init(rawValue: Int(info.joinRestrict)!) ?? .noRestrict,
-                joinTarget: info.joinTarget,
-                note: info.etc_note,
-                rateMethod: data.result.depositProductRateInfoList.first(where: { $0.productCode == info.productCode })?.rateMethod ?? "알 수 없음",
-                depositAmountLimit: info.max_limit ?? 0,
-                depositMonth: data.result.depositProductRateInfoList.filter({ $0.productCode == info.productCode }).map { Int($0.depositMonth) ?? 0 },
-                depositRateList: data.result.depositProductRateInfoList.filter({ $0.productCode == info.productCode && $0.baseRate != nil && $0.highestRate != nil}).reduce(into: [:]) { result, info in
-                    result[Int(info.depositMonth)!] = [info.baseRate!, info.highestRate!]
-                }
-            )
-        }
+    private func fetchRateDTO() async throws -> (RateResponseDTO, RateResponseDTO, RateResponseDTO) {
+        async let baseRate = try await self.repository.getRate(type: .base)
+        
+        async let firstRate = try await self.repository.getRate(type: .first)
+        
+        async let secondRate = try await self.repository.getRate(type: .second)
+
+        return try await (baseRate, firstRate, secondRate)
     }
     
-    private func converToSavingProductEntityArray(data: SavingProductResponseDTO) -> [SavingProductEntity] {
-        return data.result.savingProductInfoList.map { info in
-            
-            return SavingProductEntity(
-                id: info.productCode,
-                name: info.productName,
-                companyID: info.companyCode,
-                companyName: info.companyName,
-                joinWay: info.join_way.split(separator: ",").map { String($0) },
-                preferentialCondition: info.preferentialCondition,
-                joinRestirct: JoinRestrictType.init(rawValue: Int(info.joinRestrict)!) ?? .noRestrict,
-                joinTarget: info.joinTarget,
-                note: info.etc_note,
-                rateMethod: data.result.savingProductRateInfoList.first(where: { $0.productCode == info.productCode })?.rateMethod ?? "알 수 없음",
-                savingMethod: data.result.savingProductRateInfoList.first(where: { $0.productCode == info.productCode })?.savingMethod ?? "알 수 없음",
-                savingAmountLimit: info.max_limit ?? 0,
-                savingMonth: data.result.savingProductRateInfoList.filter({ $0.productCode == info.productCode }).map { Int($0.savingMonth) ?? 0 },
-                savingRateList: data.result.savingProductRateInfoList.filter({ $0.productCode == info.productCode && $0.baseRate != nil && $0.highestRate != nil}).reduce(into: [:]) { result, info in
-                    result[Int(info.savingMonth)!] = [info.baseRate!, info.highestRate!]
-                }
-            )
-        }
+    private func fetchDepositDTO() async throws -> (DepositProductResponseDTO, DepositProductResponseDTO) {
+        async let firstDeposit = try await self.repository.getDepositProduct(type: .firstBank)
+        
+        async let secondDeposit = try await self.repository.getDepositProduct(type: .secondBank)
+
+        return try await (firstDeposit, secondDeposit)
+    }
+    
+    private func fetchSavingDTO() async throws -> (SavingProductResponseDTO, SavingProductResponseDTO) {
+        async let firstSaving = try await self.repository.getSavingProduct(type: .firstBank)
+        
+        async let secondSaving = try await self.repository.getSavingProduct(type: .secondBank)
+
+        return try await (firstSaving, secondSaving)
+    }
+    
+    private func getMaxValue(entity: DepositProductEntity) -> Double {
+        let simpleMax = entity.depositSimpleRateList[12]?.max() ?? 0
+        let compoundMax = entity.depositCompoundRateList[12]?.max() ?? 0
+        return max(simpleMax, compoundMax)
+    }
+    
+    private func getMaxValue(entity: SavingProductEntity) -> Double {
+        let simpleMax = entity.savingSimpleRateList[12]?.max() ?? 0
+        let compoundMax = entity.savingCompoundRateList[12]?.max() ?? 0
+        return max(simpleMax, compoundMax)
     }
 }
