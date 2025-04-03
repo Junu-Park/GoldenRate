@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RateChartEntity {
+struct RateChartEntity: Hashable {
     let date: Date
     let rate: Double
     let type: RateType

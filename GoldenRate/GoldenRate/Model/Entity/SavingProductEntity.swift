@@ -7,19 +7,20 @@
 
 import Foundation
 
-struct SavingProductEntity {
+struct SavingProductEntity: Hashable {
     let id: String
     let name: String
     let companyID: String
     let companyName: String
     let joinWay: [String]
     let preferentialCondition: String
-    let joinRestirct: JoinRestrictType
+    let joinRestrict: JoinRestrictType
     let joinTarget: String
-    let note: String
-    let rateMethod: String
+    let maxLimit: Int
+    let interestRateType: [InterestRateType]
     let savingMethod: String
-    let savingAmountLimit: Int
-    let savingMonth: [Int]
-    let savingRateList: [Int: [Double]]
+    let savingSimpleMonth: [Int]
+    let savingSimpleRateList: [Int: [Double]]
+    let savingCompoundMonth: [Int]
+    let savingCompoundRateList: [Int: [Double]]
 }
