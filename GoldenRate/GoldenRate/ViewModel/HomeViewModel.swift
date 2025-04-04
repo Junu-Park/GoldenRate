@@ -42,9 +42,9 @@ final class HomeViewModel: ViewModel {
                     do {
                         let (baseRateDTO, firstRateDTO, secondRateDTO) = try await self.fetchRateDTO()
                         
-                        let baseRateEntity = baseRateDTO.statisticSearch.row.map { RateChartEntity(date: $0.time.convertToYearMonthDate(), rate: Double($0.dataValue) ?? 0.0, type: .base) }
-                        let firstRateEntity = firstRateDTO.statisticSearch.row.map { RateChartEntity(date: $0.time.convertToYearMonthDate(), rate: Double($0.dataValue) ?? 0.0, type: .first) }
-                        let secondRateEntity = secondRateDTO.statisticSearch.row.map { RateChartEntity(date: $0.time.convertToYearMonthDate(), rate: Double($0.dataValue) ?? 0.0, type: .second) }
+                        let baseRateEntity = baseRateDTO.statisticSearch.row.map { RateChartEntity(date: $0.time.convertToDate(format: .yyyyMM), rate: Double($0.dataValue) ?? 0.0, type: .base) }
+                        let firstRateEntity = firstRateDTO.statisticSearch.row.map { RateChartEntity(date: $0.time.convertToDate(format: .yyyyMM), rate: Double($0.dataValue) ?? 0.0, type: .first) }
+                        let secondRateEntity = secondRateDTO.statisticSearch.row.map { RateChartEntity(date: $0.time.convertToDate(format: .yyyyMM), rate: Double($0.dataValue) ?? 0.0, type: .second) }
                         
                         rateChartData.send(baseRateEntity + firstRateEntity + secondRateEntity)
                     } catch {

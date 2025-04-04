@@ -189,18 +189,18 @@ extension RateChartView {
 
 #Preview {
     let data = [
-        RateChartEntity(date: "202411".convertToYearMonthDate(), rate: 3.5, type: .base),
-        RateChartEntity(date: "202411".convertToYearMonthDate(), rate: 3.8, type: .first),
-        RateChartEntity(date: "202411".convertToYearMonthDate(), rate: 4.2, type: .second),
-        RateChartEntity(date: "202412".convertToYearMonthDate(), rate: 3.4, type: .base),
-        RateChartEntity(date: "202412".convertToYearMonthDate(), rate: 3.7, type: .first),
-        RateChartEntity(date: "202412".convertToYearMonthDate(), rate: 4.1, type: .second),
-        RateChartEntity(date: "202501".convertToYearMonthDate(), rate: 3.3, type: .base),
-        RateChartEntity(date: "202501".convertToYearMonthDate(), rate: 3.6, type: .first),
-        RateChartEntity(date: "202501".convertToYearMonthDate(), rate: 4.0, type: .second),
-        RateChartEntity(date: "202502".convertToYearMonthDate(), rate: 3.2, type: .base),
-        RateChartEntity(date: "202502".convertToYearMonthDate(), rate: 3.5, type: .first),
-        RateChartEntity(date: "202502".convertToYearMonthDate(), rate: 3.9, type: .second)
+        RateChartEntity(date: "202411".convertToDate(format: .yyyyMM), rate: 3.5, type: .base),
+        RateChartEntity(date: "202411".convertToDate(format: .yyyyMM), rate: 3.8, type: .first),
+        RateChartEntity(date: "202411".convertToDate(format: .yyyyMM), rate: 4.2, type: .second),
+        RateChartEntity(date: "202412".convertToDate(format: .yyyyMM), rate: 3.4, type: .base),
+        RateChartEntity(date: "202412".convertToDate(format: .yyyyMM), rate: 3.7, type: .first),
+        RateChartEntity(date: "202412".convertToDate(format: .yyyyMM), rate: 4.1, type: .second),
+        RateChartEntity(date: "202501".convertToDate(format: .yyyyMM), rate: 3.3, type: .base),
+        RateChartEntity(date: "202501".convertToDate(format: .yyyyMM), rate: 3.6, type: .first),
+        RateChartEntity(date: "202501".convertToDate(format: .yyyyMM), rate: 4.0, type: .second),
+        RateChartEntity(date: "202502".convertToDate(format: .yyyyMM), rate: 3.2, type: .base),
+        RateChartEntity(date: "202502".convertToDate(format: .yyyyMM), rate: 3.5, type: .first),
+        RateChartEntity(date: "202502".convertToDate(format: .yyyyMM), rate: 3.9, type: .second)
         ]
     
     RateChartView(rateDataList: data)
