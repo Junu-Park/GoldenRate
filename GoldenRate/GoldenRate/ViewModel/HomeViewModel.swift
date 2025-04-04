@@ -28,7 +28,7 @@ final class HomeViewModel: ViewModel {
         self.repository = repository
     }
     
-    func tranform(input: Input) -> Output {
+    func transform(input: Input) -> Output {
         let rateChartData = CurrentValueSubject<[RateChartEntity], Never>([])
         let depositProductTopData = CurrentValueSubject<[DepositProductEntity], Never>([])
         let savingProductTopData = CurrentValueSubject<[SavingProductEntity], Never>([])

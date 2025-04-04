@@ -52,7 +52,7 @@ final class HomeViewController: BaseViewController {
         let getSavingProductTopData = CurrentValueSubject<Void, Never>(())
         
         let input = HomeViewModel.Input(getRateChartData: getRateChartData.eraseToAnyPublisher(), getDepositProductTopData: getDepositProductTopData.eraseToAnyPublisher(), getSavingProductTopData: getSavingProductTopData.eraseToAnyPublisher())
-        let output = self.viewModel.tranform(input: input)
+        let output = self.viewModel.transform(input: input)
         
         Publishers.CombineLatest3(
                 output.rateChartData,
