@@ -13,4 +13,10 @@ extension UIView {
             self.addSubview(view)
         }
     }
+    
+    func setShadowBorder() {
+        self.layer.shadowOpacity = 0.3
+        self.layer.shadowOffset = .zero
+        self.layer.shadowColor = UIColor.defaultText.cgColor
+    }
 }

@@ -50,9 +50,7 @@ final class RateRankingRowView: BaseView {
     
     override func configureView() {
         self.layer.cornerRadius = 10
-        self.layer.shadowColor = UIColor.defaultText.cgColor
-        self.layer.shadowOpacity = 0.3
-        self.layer.shadowOffset = .zero
+        self.setShadowBorder()
         
         self.rankLabel.font = .bold14
         self.rankLabel.textColor = .text

@@ -77,9 +77,7 @@ final class RateRankingViewCell: BaseCollectionViewCell {
         self.contentView.layer.cornerRadius = 15
         self.contentView.clipsToBounds = true
 
-        self.layer.shadowColor = UIColor.defaultText.cgColor
-        self.layer.shadowOpacity = 0.3
-        self.layer.shadowOffset = .zero
+        self.setShadowBorder()
 
         let titleLabelString = NSAttributedString(totalString: "예•적금 금리 랭킹 TOP3", totalColor: .defaultText, totalFont: .bold18, targetString: "TOP3", targetColor: .accent, targetFont: .bold18)
         

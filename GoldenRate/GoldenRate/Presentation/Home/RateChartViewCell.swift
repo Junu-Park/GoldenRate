@@ -43,9 +43,7 @@ final class RateChartViewCell: BaseCollectionViewCell {
         self.contentView.layer.cornerRadius = 15
         self.contentView.clipsToBounds = true
         
-        self.layer.shadowColor = UIColor.defaultText.cgColor
-        self.layer.shadowOpacity = 0.3
-        self.layer.shadowOffset = .zero
+        self.setShadowBorder()
         
         let titleLabelString = NSAttributedString(totalString: "금리 차트", totalColor: .defaultText, totalFont: .bold18, targetString: "금리", targetColor: .accent, targetFont: .bold18)
         self.titleLabel.attributedText = titleLabelString
