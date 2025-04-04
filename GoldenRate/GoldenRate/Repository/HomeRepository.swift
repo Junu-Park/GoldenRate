@@ -8,10 +8,73 @@
 import Foundation
 
 protocol HomeRepository {
-    func getRate(type: RateType) -> RateResponseDTO
-    func getFinancialCompany(type: FinancialCompanyType) -> FinancialCompanyResponseDTO
-    func getDepositProduct(type: FinancialCompanyType) -> DepositProductResponseDTO
-    func getSavingProduct(type: FinancialCompanyType) -> SavingProductResponseDTO
+    func getRate(type: RateType) async throws -> RateResponseDTO
+//    func getFinancialCompany(type: FinancialCompanyType) -> FinancialCompanyResponseDTO
+    func getDepositProduct(type: FinancialCompanyType) async throws -> DepositProductResponseDTO
+    func getSavingProduct(type: FinancialCompanyType) async throws -> SavingProductResponseDTO
+}
+
+struct RealHomeRepository: HomeRepository {
+    func getRate(type: RateType) async throws -> RateResponseDTO {
+        do {
+            switch type {
+            case .base:
+                return try await NetworkManager.shared.fetchBaseRate()
+            case .first:
+                return try await NetworkManager.shared.fetchFirstInterestRate()
+            case .second:
+                return try await NetworkManager.shared.fetchSecondInterestRate()
+            }
+        } catch {
+            throw error
+        }
+    }
+    
+    func getDepositProduct(type: FinancialCompanyType) async throws -> DepositProductResponseDTO {
+        do {
+            switch type {
+            case .all:
+                let first: DepositProductResponseDTO = try await NetworkManager.shared.fetchAllDepositProducts(topFinGrpNo: FinancialCompanyType.firstBank.code)
+                let second: DepositProductResponseDTO = try await NetworkManager.shared.fetchAllDepositProducts(topFinGrpNo: FinancialCompanyType.secondBank.code)
+                
+                var totalInfoList = first.result.depositProductInfoList
+                totalInfoList.append(contentsOf: second.result.depositProductInfoList)
+                var totalRateList = first.result.depositProductRateInfoList
+                totalRateList.append(contentsOf: second.result.depositProductRateInfoList)
+                
+                return DepositProductResponseDTO(result: DepositProductResult(prdt_div: first.result.prdt_div, total_count: first.result.total_count + second.result.total_count, max_page_no: 1, now_page_no: 1, err_cd: first.result.err_cd, err_msg: first.result.err_msg, depositProductInfoList: totalInfoList, depositProductRateInfoList: totalRateList))
+            case .firstBank:
+                return try await NetworkManager.shared.fetchAllDepositProducts(topFinGrpNo: FinancialCompanyType.firstBank.code)
+            case .secondBank:
+                return try await NetworkManager.shared.fetchAllDepositProducts(topFinGrpNo: FinancialCompanyType.secondBank.code)
+            }
+        } catch {
+            throw error
+        }
+    }
+    
+    func getSavingProduct(type: FinancialCompanyType) async throws -> SavingProductResponseDTO {
+        do {
+            switch type {
+            case .all:
+                let first: SavingProductResponseDTO = try await NetworkManager.shared.fetchAllSavingProducts(topFinGrpNo: FinancialCompanyType.firstBank.code)
+                let second: SavingProductResponseDTO = try await NetworkManager.shared.fetchAllSavingProducts(topFinGrpNo: FinancialCompanyType.secondBank.code)
+                
+                var totalInfoList = first.result.savingProductInfoList
+                totalInfoList.append(contentsOf: second.result.savingProductInfoList)
+                var totalRateList = first.result.savingProductRateInfoList
+                totalRateList.append(contentsOf: second.result.savingProductRateInfoList)
+                
+                return SavingProductResponseDTO(result: SavingProductResult(prdt_div: first.result.prdt_div, total_count: first.result.total_count + second.result.total_count, max_page_no: 1, now_page_no: 1, err_cd: first.result.err_cd, err_msg: first.result.err_msg, savingProductInfoList: totalInfoList, savingProductRateInfoList: totalRateList))
+            case .firstBank:
+                return try await NetworkManager.shared.fetchAllSavingProducts(topFinGrpNo: FinancialCompanyType.firstBank.code)
+            case .secondBank:
+                return try await NetworkManager.shared.fetchAllSavingProducts(topFinGrpNo: FinancialCompanyType.secondBank.code)
+            }
+        } catch {
+            throw error
+        }
+    }
 }
 
 struct MockHomeRepository: HomeRepository {
@@ -21,71 +84,71 @@ struct MockHomeRepository: HomeRepository {
         case .base:
             return RateResponseDTO(
                 statisticSearch: StatisticSearch(
-                    list_total_count: 12,
+                    listTotalCount: 12,
                     row: [
                         StatisticSearchRow(
-                            STAT_CODE: "722Y001",
-                            STAT_NAME: "1.3.1. 한국은행 기준금리 및 여수신금리",
-                            ITEM_CODE1: "0101000",
-                            ITEM_NAME1: "한국은행 기준금리",
-                            ITEM_CODE2: nil,
-                            ITEM_NAME2: nil,
-                            ITEM_CODE3: nil,
-                            ITEM_NAME3: nil,
-                            ITEM_CODE4: nil,
-                            ITEM_NAME4: nil,
-                            UNIT_NAME: "연%",
-                            WGT: nil,
-                            TIME: "202411",
-                            DATA_VALUE: "3"
+                            statCode: "722Y001",
+                            statName: "1.3.1. 한국은행 기준금리 및 여수신금리",
+                            itemCode1: "0101000",
+                            itemName1: "한국은행 기준금리",
+                            itemCode2: nil,
+                            itemName2: nil,
+                            itemCode3: nil,
+                            itemName3: nil,
+                            itemCode4: nil,
+                            itemName4: nil,
+                            unitName: "연%",
+                            wgt: nil,
+                            time: "202411",
+                            dataValue: "3"
                         ),
                         StatisticSearchRow(
-                            STAT_CODE: "722Y001",
-                            STAT_NAME: "1.3.1. 한국은행 기준금리 및 여수신금리",
-                            ITEM_CODE1: "0101000",
-                            ITEM_NAME1: "한국은행 기준금리",
-                            ITEM_CODE2: nil,
-                            ITEM_NAME2: nil,
-                            ITEM_CODE3: nil,
-                            ITEM_NAME3: nil,
-                            ITEM_CODE4: nil,
-                            ITEM_NAME4: nil,
-                            UNIT_NAME: "연%",
-                            WGT: nil,
-                            TIME: "202412",
-                            DATA_VALUE: "3"
+                            statCode: "722Y001",
+                            statName: "1.3.1. 한국은행 기준금리 및 여수신금리",
+                            itemCode1: "0101000",
+                            itemName1: "한국은행 기준금리",
+                            itemCode2: nil,
+                            itemName2: nil,
+                            itemCode3: nil,
+                            itemName3: nil,
+                            itemCode4: nil,
+                            itemName4: nil,
+                            unitName: "연%",
+                            wgt: nil,
+                            time: "202412",
+                            dataValue: "3"
                         ),
                         StatisticSearchRow(
-                            STAT_CODE: "722Y001",
-                            STAT_NAME: "1.3.1. 한국은행 기준금리 및 여수신금리",
-                            ITEM_CODE1: "0101000",
-                            ITEM_NAME1: "한국은행 기준금리",
-                            ITEM_CODE2: nil,
-                            ITEM_NAME2: nil,
-                            ITEM_CODE3: nil,
-                            ITEM_NAME3: nil,
-                            ITEM_CODE4: nil,
-                            ITEM_NAME4: nil,
-                            UNIT_NAME: "연%",
-                            WGT: nil,
-                            TIME: "202501",
-                            DATA_VALUE: "3"
+                            statCode: "722Y001",
+                            statName: "1.3.1. 한국은행 기준금리 및 여수신금리",
+                            itemCode1: "0101000",
+                            itemName1: "한국은행 기준금리",
+                            itemCode2: nil,
+                            itemName2: nil,
+                            itemCode3: nil,
+                            itemName3: nil,
+                            itemCode4: nil,
+                            itemName4: nil,
+                            unitName: "연%",
+                            wgt: nil,
+                            time: "202501",
+                            dataValue: "3"
                         ),
                         StatisticSearchRow(
-                            STAT_CODE: "722Y001",
-                            STAT_NAME: "1.3.1. 한국은행 기준금리 및 여수신금리",
-                            ITEM_CODE1: "0101000",
-                            ITEM_NAME1: "한국은행 기준금리",
-                            ITEM_CODE2: nil,
-                            ITEM_NAME2: nil,
-                            ITEM_CODE3: nil,
-                            ITEM_NAME3: nil,
-                            ITEM_CODE4: nil,
-                            ITEM_NAME4: nil,
-                            UNIT_NAME: "연%",
-                            WGT: nil,
-                            TIME: "202502",
-                            DATA_VALUE: "2.75"
+                            statCode: "722Y001",
+                            statName: "1.3.1. 한국은행 기준금리 및 여수신금리",
+                            itemCode1: "0101000",
+                            itemName1: "한국은행 기준금리",
+                            itemCode2: nil,
+                            itemName2: nil,
+                            itemCode3: nil,
+                            itemName3: nil,
+                            itemCode4: nil,
+                            itemName4: nil,
+                            unitName: "연%",
+                            wgt: nil,
+                            time: "202502",
+                            dataValue: "2.75"
                         )
                     ]
                 )
@@ -93,71 +156,71 @@ struct MockHomeRepository: HomeRepository {
         case .first:
             return RateResponseDTO(
                 statisticSearch: StatisticSearch(
-                    list_total_count: 12,
+                    listTotalCount: 12,
                     row: [
                         StatisticSearchRow(
-                            STAT_CODE: "121Y002",
-                            STAT_NAME: "1.3.3.1.1. 예금은행 수신금리(신규취급액 기준)",
-                            ITEM_CODE1: "BEABAA2",
-                            ITEM_NAME1: "저축성수신",
-                            ITEM_CODE2: nil,
-                            ITEM_NAME2: nil,
-                            ITEM_CODE3: nil,
-                            ITEM_NAME3: nil,
-                            ITEM_CODE4: nil,
-                            ITEM_NAME4: nil,
-                            UNIT_NAME: "연%",
-                            WGT: nil,
-                            TIME: "202411",
-                            DATA_VALUE: "3.35"
+                            statCode: "121Y002",
+                            statName: "1.3.3.1.1. 예금은행 수신금리(신규취급액 기준)",
+                            itemCode1: "BEABAA2",
+                            itemName1: "저축성수신",
+                            itemCode2: nil,
+                            itemName2: nil,
+                            itemCode3: nil,
+                            itemName3: nil,
+                            itemCode4: nil,
+                            itemName4: nil,
+                            unitName: "연%",
+                            wgt: nil,
+                            time: "202411",
+                            dataValue: "3.35"
                         ),
                         StatisticSearchRow(
-                            STAT_CODE: "121Y002",
-                            STAT_NAME: "1.3.3.1.1. 예금은행 수신금리(신규취급액 기준)",
-                            ITEM_CODE1: "BEABAA2",
-                            ITEM_NAME1: "저축성수신",
-                            ITEM_CODE2: nil,
-                            ITEM_NAME2: nil,
-                            ITEM_CODE3: nil,
-                            ITEM_NAME3: nil,
-                            ITEM_CODE4: nil,
-                            ITEM_NAME4: nil,
-                            UNIT_NAME: "연%",
-                            WGT: nil,
-                            TIME: "202412",
-                            DATA_VALUE: "3.21"
+                            statCode: "121Y002",
+                            statName: "1.3.3.1.1. 예금은행 수신금리(신규취급액 기준)",
+                            itemCode1: "BEABAA2",
+                            itemName1: "저축성수신",
+                            itemCode2: nil,
+                            itemName2: nil,
+                            itemCode3: nil,
+                            itemName3: nil,
+                            itemCode4: nil,
+                            itemName4: nil,
+                            unitName: "연%",
+                            wgt: nil,
+                            time: "202412",
+                            dataValue: "3.21"
                         ),
                         StatisticSearchRow(
-                            STAT_CODE: "121Y002",
-                            STAT_NAME: "1.3.3.1.1. 예금은행 수신금리(신규취급액 기준)",
-                            ITEM_CODE1: "BEABAA2",
-                            ITEM_NAME1: "저축성수신",
-                            ITEM_CODE2: nil,
-                            ITEM_NAME2: nil,
-                            ITEM_CODE3: nil,
-                            ITEM_NAME3: nil,
-                            ITEM_CODE4: nil,
-                            ITEM_NAME4: nil,
-                            UNIT_NAME: "연%",
-                            WGT: nil,
-                            TIME: "202501",
-                            DATA_VALUE: "3.07"
+                            statCode: "121Y002",
+                            statName: "1.3.3.1.1. 예금은행 수신금리(신규취급액 기준)",
+                            itemCode1: "BEABAA2",
+                            itemName1: "저축성수신",
+                            itemCode2: nil,
+                            itemName2: nil,
+                            itemCode3: nil,
+                            itemName3: nil,
+                            itemCode4: nil,
+                            itemName4: nil,
+                            unitName: "연%",
+                            wgt: nil,
+                            time: "202501",
+                            dataValue: "3.07"
                         ),
                         StatisticSearchRow(
-                            STAT_CODE: "121Y002",
-                            STAT_NAME: "1.3.3.1.1. 예금은행 수신금리(신규취급액 기준)",
-                            ITEM_CODE1: "BEABAA2",
-                            ITEM_NAME1: "저축성수신",
-                            ITEM_CODE2: nil,
-                            ITEM_NAME2: nil,
-                            ITEM_CODE3: nil,
-                            ITEM_NAME3: nil,
-                            ITEM_CODE4: nil,
-                            ITEM_NAME4: nil,
-                            UNIT_NAME: "연%",
-                            WGT: nil,
-                            TIME: "202502",
-                            DATA_VALUE: "2.97"
+                            statCode: "121Y002",
+                            statName: "1.3.3.1.1. 예금은행 수신금리(신규취급액 기준)",
+                            itemCode1: "BEABAA2",
+                            itemName1: "저축성수신",
+                            itemCode2: nil,
+                            itemName2: nil,
+                            itemCode3: nil,
+                            itemName3: nil,
+                            itemCode4: nil,
+                            itemName4: nil,
+                            unitName: "연%",
+                            wgt: nil,
+                            time: "202502",
+                            dataValue: "2.97"
                         )
                     ]
                 )
@@ -165,78 +228,78 @@ struct MockHomeRepository: HomeRepository {
         case .second:
             return RateResponseDTO(
                 statisticSearch: StatisticSearch(
-                    list_total_count: 12,
+                    listTotalCount: 12,
                     row: [
                         StatisticSearchRow(
-                            STAT_CODE: "121Y004",
-                            STAT_NAME: "1.3.4.1. 비은행금융기관 수신금리(신규취급액 기준)",
-                            ITEM_CODE1: "BEBBBE01",
-                            ITEM_NAME1: "상호저축은행-정기예금(1년)",
-                            ITEM_CODE2: nil,
-                            ITEM_NAME2: nil,
-                            ITEM_CODE3: nil,
-                            ITEM_NAME3: nil,
-                            ITEM_CODE4: nil,
-                            ITEM_NAME4: nil,
-                            UNIT_NAME: "연리% ",
-                            WGT: nil,
-                            TIME: "202411",
-                            DATA_VALUE: "3.61"
+                            statCode: "121Y004",
+                            statName: "1.3.4.1. 비은행금융기관 수신금리(신규취급액 기준)",
+                            itemCode1: "BEBBBE01",
+                            itemName1: "상호저축은행-정기예금(1년)",
+                            itemCode2: nil,
+                            itemName2: nil,
+                            itemCode3: nil,
+                            itemName3: nil,
+                            itemCode4: nil,
+                            itemName4: nil,
+                            unitName: "연리% ",
+                            wgt: nil,
+                            time: "202411",
+                            dataValue: "3.61"
                         ),
                         StatisticSearchRow(
-                            STAT_CODE: "121Y004",
-                            STAT_NAME: "1.3.4.1. 비은행금융기관 수신금리(신규취급액 기준)",
-                            ITEM_CODE1: "BEBBBE01",
-                            ITEM_NAME1: "상호저축은행-정기예금(1년)",
-                            ITEM_CODE2: nil,
-                            ITEM_NAME2: nil,
-                            ITEM_CODE3: nil,
-                            ITEM_NAME3: nil,
-                            ITEM_CODE4: nil,
-                            ITEM_NAME4: nil,
-                            UNIT_NAME: "연리% ",
-                            WGT: nil,
-                            TIME: "202412",
-                            DATA_VALUE: "3.44"
+                            statCode: "121Y004",
+                            statName: "1.3.4.1. 비은행금융기관 수신금리(신규취급액 기준)",
+                            itemCode1: "BEBBBE01",
+                            itemName1: "상호저축은행-정기예금(1년)",
+                            itemCode2: nil,
+                            itemName2: nil,
+                            itemCode3: nil,
+                            itemName3: nil,
+                            itemCode4: nil,
+                            itemName4: nil,
+                            unitName: "연리% ",
+                            wgt: nil,
+                            time: "202412",
+                            dataValue: "3.44"
                         ),
                         StatisticSearchRow(
-                            STAT_CODE: "121Y004",
-                            STAT_NAME: "1.3.4.1. 비은행금융기관 수신금리(신규취급액 기준)",
-                            ITEM_CODE1: "BEBBBE01",
-                            ITEM_NAME1: "상호저축은행-정기예금(1년)",
-                            ITEM_CODE2: nil,
-                            ITEM_NAME2: nil,
-                            ITEM_CODE3: nil,
-                            ITEM_NAME3: nil,
-                            ITEM_CODE4: nil,
-                            ITEM_NAME4: nil,
-                            UNIT_NAME: "연리% ",
-                            WGT: nil,
-                            TIME: "202501",
-                            DATA_VALUE: "3.3"
+                            statCode: "121Y004",
+                            statName: "1.3.4.1. 비은행금융기관 수신금리(신규취급액 기준)",
+                            itemCode1: "BEBBBE01",
+                            itemName1: "상호저축은행-정기예금(1년)",
+                            itemCode2: nil,
+                            itemName2: nil,
+                            itemCode3: nil,
+                            itemName3: nil,
+                            itemCode4: nil,
+                            itemName4: nil,
+                            unitName: "연리% ",
+                            wgt: nil,
+                            time: "202501",
+                            dataValue: "3.3"
                         ),
                         StatisticSearchRow(
-                            STAT_CODE: "121Y004",
-                            STAT_NAME: "1.3.4.1. 비은행금융기관 수신금리(신규취급액 기준)",
-                            ITEM_CODE1: "BEBBBE01",
-                            ITEM_NAME1: "상호저축은행-정기예금(1년)",
-                            ITEM_CODE2: nil,
-                            ITEM_NAME2: nil,
-                            ITEM_CODE3: nil,
-                            ITEM_NAME3: nil,
-                            ITEM_CODE4: nil,
-                            ITEM_NAME4: nil,
-                            UNIT_NAME: "연리% ",
-                            WGT: nil,
-                            TIME: "202502",
-                            DATA_VALUE: "3.1"
+                            statCode: "121Y004",
+                            statName: "1.3.4.1. 비은행금융기관 수신금리(신규취급액 기준)",
+                            itemCode1: "BEBBBE01",
+                            itemName1: "상호저축은행-정기예금(1년)",
+                            itemCode2: nil,
+                            itemName2: nil,
+                            itemCode3: nil,
+                            itemName3: nil,
+                            itemCode4: nil,
+                            itemName4: nil,
+                            unitName: "연리% ",
+                            wgt: nil,
+                            time: "202502",
+                            dataValue: "3.1"
                         )
                     ]
                 )
             )
         }
     }
-    
+    /*
     func getFinancialCompany(type: FinancialCompanyType) -> FinancialCompanyResponseDTO {
         switch type {
         case .firstBank:
@@ -573,9 +636,398 @@ struct MockHomeRepository: HomeRepository {
             )
         }
     }
-    
+    */
     func getDepositProduct(type: FinancialCompanyType) -> DepositProductResponseDTO {
         switch type {
+        case .all:
+            return DepositProductResponseDTO(
+                result: DepositProductResult(
+                    prdt_div: "D",
+                    total_count: 10, // 첫 번째 DTO의 5 + 두 번째 DTO의 5
+                    max_page_no: 1,
+                    now_page_no: 1,
+                    err_cd: "000",
+                    err_msg: "정상",
+                    depositProductInfoList: [
+                        // 첫 번째 DTO의 depositProductInfoList
+                        DepositProductInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010020",
+                            productCode: "KD1234A",
+                            companyName: "케이뱅크",
+                            productName: "코드K 정기예금",
+                            join_way: "스마트폰",
+                            mtrt_int: "만기 후\n- 1개월 이내: 약정이율의 50%\n- 1개월 초과 6개월 이내: 약정이율의 20%\n- 6개월 초과: 약정이율의 10%",
+                            preferentialCondition: "최초 가입 고객 우대이율 0.3% 제공",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "- 가입기간: 3~36개월\n- 최소 가입금액: 10만원 이상",
+                            max_limit: 500000000,
+                            dcls_strt_day: "20250401",
+                            dcls_end_day: "20251231",
+                            fin_co_subm_day: "202504011200"
+                        ),
+                        DepositProductInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010021",
+                            productCode: "NH5678B",
+                            companyName: "NH농협은행",
+                            productName: "NH모바일예금",
+                            join_way: "인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 60%\n만기 후 1개월 초과: 약정이율의 30%",
+                            preferentialCondition: "NH농협카드 보유 시 우대이율 0.2% 제공",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "- 가입기간: 1~24개월\n- 최소 가입금액: 50만원 이상",
+                            max_limit: nil,
+                            dcls_strt_day: "20250401",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202504011230"
+                        ),
+                        DepositProductInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010022",
+                            productCode: "SH9012C",
+                            companyName: "신한은행",
+                            productName: "신한베스트예금",
+                            join_way: "영업점,인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 50%\n만기 후 1개월 초과: 약정이율의 20%",
+                            preferentialCondition: "신한 신규 고객 대상 0.25% 우대이율",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인 및 개인사업자",
+                            etc_note: "- 가입기간: 6~36개월\n- 최소 가입금액: 100만원 이상",
+                            max_limit: 1000000000,
+                            dcls_strt_day: "20250401",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202504011300"
+                        ),
+                        DepositProductInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010023",
+                            productCode: "KB3456D",
+                            companyName: "국민은행",
+                            productName: "KB스타예금",
+                            join_way: "영업점,인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 50%\n만기 후 1개월 초과 3개월 이내: 약정이율의 25%\n만기 후 3개월 초과: 약정이율의 10%",
+                            preferentialCondition: "KB국민카드 결제 실적 시 0.15% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "- 가입기간: 1~36개월\n- 최소 가입금액: 30만원 이상",
+                            max_limit: 300000000,
+                            dcls_strt_day: "20250401",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202504011400"
+                        ),
+                        DepositProductInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010024",
+                            productCode: "HN7890E",
+                            companyName: "하나은행",
+                            productName: "하나더적금",
+                            join_way: "인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 55%\n만기 후 1개월 초과: 약정이율의 20%",
+                            preferentialCondition: "하나멤버스 가입 시 0.2% 우대이율",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "- 가입기간: 6~24개월\n- 최소 가입금액: 20만원 이상",
+                            max_limit: nil,
+                            dcls_strt_day: "20250401",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202504011500"
+                        ),
+                        // 두 번째 DTO의 depositProductInfoList
+                        DepositProductInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020001",
+                            productCode: "SBK1001",
+                            companyName: "SBI저축은행",
+                            productName: "SBI정기예금",
+                            join_way: "인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 50%\n만기 후 1개월 초과 6개월 이내: 약정이율의 20%\n만기 후 6개월 초과: 약정이율의 10%",
+                            preferentialCondition: "최초 가입 시 0.2% 우대이율 제공",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "- 가입기간: 6~36개월\n- 최소 가입금액: 10만원 이상",
+                            max_limit: 300000000,
+                            dcls_strt_day: "20250401",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202504011000"
+                        ),
+                        DepositProductInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020002",
+                            productCode: "OKS2002",
+                            companyName: "OK저축은행",
+                            productName: "OK안심정기예금",
+                            join_way: "영업점,인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 60%\n만기 후 1개월 초과: 약정이율의 30%",
+                            preferentialCondition: "OK저축은행 모바일 앱 가입 시 0.15% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인 및 개인사업자",
+                            etc_note: "- 가입기간: 3~24개월\n- 최소 가입금액: 50만원 이상",
+                            max_limit: 500000000,
+                            dcls_strt_day: "20250401",
+                            dcls_end_day: "20251231",
+                            fin_co_subm_day: "202504011100"
+                        ),
+                        DepositProductInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020003",
+                            productCode: "WLS3003",
+                            companyName: "웰컴저축은행",
+                            productName: "웰컴프리미엄예금",
+                            join_way: "인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 50%\n만기 후 1개월 초과: 약정이율의 25%",
+                            preferentialCondition: "웰컴체크카드 발급 시 0.3% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "- 가입기간: 12~36개월\n- 최소 가입금액: 100만원 이상",
+                            max_limit: nil,
+                            dcls_strt_day: "20250401",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202504011200"
+                        ),
+                        DepositProductInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020004",
+                            productCode: "KJS4004",
+                            companyName: "키움저축은행",
+                            productName: "키움스마트예금",
+                            join_way: "스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 55%\n만기 후 1개월 초과 3개월 이내: 약정이율의 20%\n만기 후 3개월 초과: 약정이율의 10%",
+                            preferentialCondition: "키움증권 계좌 연계 시 0.25% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "- 가입기간: 1~36개월\n- 최소 가입금액: 30만원 이상",
+                            max_limit: 200000000,
+                            dcls_strt_day: "20250401",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202504011300"
+                        ),
+                        DepositProductInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020005",
+                            productCode: "PFS5005",
+                            companyName: "페퍼저축은행",
+                            productName: "페퍼더베스트예금",
+                            join_way: "인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 50%\n만기 후 1개월 초과: 약정이율의 20%",
+                            preferentialCondition: "페퍼앱 가입 및 추천인 입력 시 0.2% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "- 가입기간: 6~24개월\n- 최소 가입금액: 20만원 이상",
+                            max_limit: 400000000,
+                            dcls_strt_day: "20250401",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202504011400"
+                        )
+                    ],
+                    depositProductRateInfoList: [
+                        // 첫 번째 DTO의 depositProductRateInfoList
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010020",
+                            productCode: "KD1234A",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "6",
+                            baseRate: 2.5,
+                            highestRate: 2.8
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010020",
+                            productCode: "KD1234A",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "12",
+                            baseRate: 2.7,
+                            highestRate: 3.0
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010021",
+                            productCode: "NH5678B",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "3",
+                            baseRate: 2.0,
+                            highestRate: 2.2
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010021",
+                            productCode: "NH5678B",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "12",
+                            baseRate: 2.4,
+                            highestRate: 2.6
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010022",
+                            productCode: "SH9012C",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "12",
+                            baseRate: 2.6,
+                            highestRate: 2.85
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010022",
+                            productCode: "SH9012C",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "24",
+                            baseRate: 2.7,
+                            highestRate: 2.95
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010023",
+                            productCode: "KB3456D",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "6",
+                            baseRate: 2.3,
+                            highestRate: 2.45
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010023",
+                            productCode: "KB3456D",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "12",
+                            baseRate: 2.5,
+                            highestRate: 2.65
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010024",
+                            productCode: "HN7890E",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "6",
+                            baseRate: 2.2,
+                            highestRate: 2.4
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0010024",
+                            productCode: "HN7890E",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "12",
+                            baseRate: 2.45,
+                            highestRate: 2.65
+                        ),
+                        // 두 번째 DTO의 depositProductRateInfoList
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020001",
+                            productCode: "SBK1001",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "6",
+                            baseRate: 3.0,
+                            highestRate: 3.2
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020001",
+                            productCode: "SBK1001",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "12",
+                            baseRate: 3.3,
+                            highestRate: 3.5
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020002",
+                            productCode: "OKS2002",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "3",
+                            baseRate: 2.8,
+                            highestRate: 2.95
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020002",
+                            productCode: "OKS2002",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "12",
+                            baseRate: 3.2,
+                            highestRate: 3.35
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020003",
+                            productCode: "WLS3003",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "12",
+                            baseRate: 3.4,
+                            highestRate: 3.7
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020003",
+                            productCode: "WLS3003",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "24",
+                            baseRate: 3.5,
+                            highestRate: 3.8
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020004",
+                            productCode: "KJS4004",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "6",
+                            baseRate: 3.1,
+                            highestRate: 3.35
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020004",
+                            productCode: "KJS4004",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "12",
+                            baseRate: 3.3,
+                            highestRate: 3.55
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020005",
+                            productCode: "PFS5005",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "6",
+                            baseRate: 3.0,
+                            highestRate: 3.2
+                        ),
+                        DepositProductRateInfo(
+                            dcls_month: "202504",
+                            companyCode: "0020005",
+                            productCode: "PFS5005",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            depositMonth: "12",
+                            baseRate: 3.25,
+                            highestRate: 3.45
+                        )
+                    ]
+                )
+            )
         case .firstBank:
             return DepositProductResponseDTO(
                 result: DepositProductResult(
@@ -981,6 +1433,435 @@ struct MockHomeRepository: HomeRepository {
     
     func getSavingProduct(type: FinancialCompanyType) -> SavingProductResponseDTO {
         switch type {
+        case .all:
+            return SavingProductResponseDTO(
+                result: SavingProductResult(
+                    prdt_div: "S",
+                    total_count: 10, // 첫 번째 DTO의 5 + 두 번째 DTO의 5
+                    max_page_no: 1,
+                    now_page_no: 1,
+                    err_cd: "000",
+                    err_msg: "정상",
+                    savingProductInfoList: [
+                        // 첫 번째 DTO (.firstBank)의 savingProductInfoList
+                        SavingProductInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010001",
+                            productCode: "WR0001F",
+                            companyName: "우리은행",
+                            productName: "우리SUPER주거래적금",
+                            join_way: "영업점,인터넷,스마트폰,전화(텔레뱅킹)",
+                            mtrt_int: "만기 후\n- 1개월이내 : 만기시점약정이율×50%\n- 1개월초과 6개월이내: 만기시점약정이율×30%\n- 6개월초과 : 만기시점약정이율×20%\n\n※ 만기시점 약정이율 : 일반정기적금 금리",
+                            preferentialCondition: "1.거래실적 인정기간 동안 우리은행 입출식 계좌에서 아래각 항목별 실적이 있는 월 수가 계약기간의 1/2이상인 경우 가. 급여/연금 이체:연0.7%p 나.공과금 자동이체 출금 실적:0.3%p 다.10만원 이상출금: 연0.3%p2. 전화(휴대폰) 및 SMS항목을 모두 동의한후 만기해지시점까지유지:연 0.1%p 3.이 상품 가입 시 금리우대쿠폰을 적용한 경우",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "1. 가입기간 : 1년/2년/3년\n2. 가입금액 : 월 50만원 이내",
+                            max_limit: nil,
+                            dcls_strt_day: "20250320",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202503201011"
+                        ),
+                        SavingProductInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010002",
+                            productCode: "NHK2001",
+                            companyName: "NH농협은행",
+                            productName: "NH행복적금",
+                            join_way: "영업점,인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 50%\n만기 후 1개월 초과: 약정이율의 25%",
+                            preferentialCondition: "NH농협카드 결제 실적 시 0.2% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "1. 가입기간 : 6개월/12개월/36개월\n2. 가입금액 : 월 40만원 이내",
+                            max_limit: nil,
+                            dcls_strt_day: "20250320",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202503201100"
+                        ),
+                        SavingProductInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010003",
+                            productCode: "SHN2002",
+                            companyName: "신한은행",
+                            productName: "신한베스트적금",
+                            join_way: "영업점,인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 50%\n만기 후 1개월 초과: 약정이율의 20%",
+                            preferentialCondition: "신한카드 월 50만원 이상 사용 시 0.3% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "1. 가입기간 : 12개월/24개월\n2. 가입금액 : 월 30만원 이내",
+                            max_limit: 20000000,
+                            dcls_strt_day: "20250320",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202503201200"
+                        ),
+                        SavingProductInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010004",
+                            productCode: "KBN2003",
+                            companyName: "국민은행",
+                            productName: "KB스타적금",
+                            join_way: "영업점,인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 60%\n만기 후 1개월 초과: 약정이율의 30%",
+                            preferentialCondition: "KB국민카드 결제 실적 시 0.2% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "1. 가입기간 : 6개월/12개월/24개월\n2. 가입금액 : 월 50만원 이내",
+                            max_limit: nil,
+                            dcls_strt_day: "20250320",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202503201300"
+                        ),
+                        SavingProductInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010005",
+                            productCode: "HNK2004",
+                            companyName: "하나은행",
+                            productName: "하나든든적금",
+                            join_way: "인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 50%\n만기 후 1개월 초과: 약정이율의 20%",
+                            preferentialCondition: "하나멤버스 가입 시 0.25% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "1. 가입기간 : 12개월/24개월/36개월\n2. 가입금액 : 월 20만원 이내",
+                            max_limit: 15000000,
+                            dcls_strt_day: "20250320",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202503201400"
+                        ),
+                        // 두 번째 DTO (.secondBank)의 savingProductInfoList
+                        SavingProductInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020001",
+                            productCode: "SBK2001",
+                            companyName: "SBI저축은행",
+                            productName: "SBI자유적금",
+                            join_way: "인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 50%\n만기 후 1개월 초과: 약정이율의 20%",
+                            preferentialCondition: "SBI 모바일 앱 가입 시 0.2% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "1. 가입기간 : 6개월/12개월/24개월\n2. 가입금액 : 월 30만원 이내",
+                            max_limit: 20000000,
+                            dcls_strt_day: "20250320",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202503201100"
+                        ),
+                        SavingProductInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020002",
+                            productCode: "OKS2002",
+                            companyName: "OK저축은행",
+                            productName: "OK정기적금",
+                            join_way: "영업점,인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 60%\n만기 후 1개월 초과: 약정이율의 30%",
+                            preferentialCondition: "월 10만원 이상 납입 시 0.15% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "1. 가입기간 : 12개월/24개월\n2. 가입금액 : 월 20만원 이내",
+                            max_limit: 30000000,
+                            dcls_strt_day: "20250320",
+                            dcls_end_day: "20251231",
+                            fin_co_subm_day: "202503201200"
+                        ),
+                        SavingProductInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020003",
+                            productCode: "WLS2003",
+                            companyName: "웰컴저축은행",
+                            productName: "웰컴프리미엄적금",
+                            join_way: "인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 55%\n만기 후 1개월 초과: 약정이율의 20%",
+                            preferentialCondition: "웰컴체크카드 발급 시 0.3% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "1. 가입기간 : 12개월/24개월/36개월\n2. 가입금액 : 월 50만원 이내",
+                            max_limit: 25000000,
+                            dcls_strt_day: "20250320",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202503201300"
+                        ),
+                        SavingProductInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020004",
+                            productCode: "KJS2004",
+                            companyName: "키움저축은행",
+                            productName: "키움꿈나무적금",
+                            join_way: "스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 50%\n만기 후 1개월 초과: 약정이율의 25%",
+                            preferentialCondition: "키움증권 계좌 동시 보유 시 0.25% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "1. 가입기간 : 6개월/12개월/24개월\n2. 가입금액 : 월 30만원 이내",
+                            max_limit: 15000000,
+                            dcls_strt_day: "20250320",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202503201400"
+                        ),
+                        SavingProductInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020005",
+                            productCode: "PFS2005",
+                            companyName: "페퍼저축은행",
+                            productName: "페퍼든든적금",
+                            join_way: "인터넷,스마트폰",
+                            mtrt_int: "만기 후 1개월 이내: 약정이율의 50%\n만기 후 1개월 초과: 약정이율의 20%",
+                            preferentialCondition: "페퍼앱 추천인 입력 시 0.2% 우대",
+                            joinRestrict: "1",
+                            joinTarget: "실명의 개인",
+                            etc_note: "1. 가입기간 : 12개월/24개월/36개월\n2. 가입금액 : 월 40만원 이내",
+                            max_limit: 20000000,
+                            dcls_strt_day: "20250320",
+                            dcls_end_day: nil,
+                            fin_co_subm_day: "202503201500"
+                        )
+                    ],
+                    savingProductRateInfoList: [
+                        // 첫 번째 DTO (.firstBank)의 savingProductRateInfoList
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010001",
+                            productCode: "WR0001F",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "S",
+                            savingMethod: "정액적립식",
+                            savingMonth: "12",
+                            baseRate: 2.6,
+                            highestRate: 4.0
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010001",
+                            productCode: "WR0001F",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "F",
+                            savingMethod: "자유적립식",
+                            savingMonth: "24",
+                            baseRate: 2.6,
+                            highestRate: 4.0
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010002",
+                            productCode: "NHK2001",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "F",
+                            savingMethod: "자유적립식",
+                            savingMonth: "6",
+                            baseRate: 2.8,
+                            highestRate: 3.0
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010002",
+                            productCode: "NHK2001",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "F",
+                            savingMethod: "자유적립식",
+                            savingMonth: "12",
+                            baseRate: 2.9,
+                            highestRate: 3.1
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010003",
+                            productCode: "SHN2002",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "S",
+                            savingMethod: "정액적립식",
+                            savingMonth: "12",
+                            baseRate: 2.7,
+                            highestRate: 3.0
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010003",
+                            productCode: "SHN2002",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "S",
+                            savingMethod: "정액적립식",
+                            savingMonth: "24",
+                            baseRate: 2.8,
+                            highestRate: 3.1
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010004",
+                            productCode: "KBN2003",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "F",
+                            savingMethod: "자유적립식",
+                            savingMonth: "6",
+                            baseRate: 2.5,
+                            highestRate: 2.7
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010004",
+                            productCode: "KBN2003",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "F",
+                            savingMethod: "자유적립식",
+                            savingMonth: "12",
+                            baseRate: 2.6,
+                            highestRate: 2.8
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010005",
+                            productCode: "HNK2004",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "S",
+                            savingMethod: "정액적립식",
+                            savingMonth: "12",
+                            baseRate: 2.7,
+                            highestRate: 2.95
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0010005",
+                            productCode: "HNK2004",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "S",
+                            savingMethod: "정액적립식",
+                            savingMonth: "24",
+                            baseRate: 2.8,
+                            highestRate: 3.05
+                        ),
+                        // 두 번째 DTO (.secondBank)의 savingProductRateInfoList
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020001",
+                            productCode: "SBK2001",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "F",
+                            savingMethod: "자유적립식",
+                            savingMonth: "6",
+                            baseRate: 3.0,
+                            highestRate: 3.2
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020001",
+                            productCode: "SBK2001",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "F",
+                            savingMethod: "자유적립식",
+                            savingMonth: "12",
+                            baseRate: 3.3,
+                            highestRate: 3.5
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020002",
+                            productCode: "OKS2002",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "S",
+                            savingMethod: "정액적립식",
+                            savingMonth: "12",
+                            baseRate: 3.2,
+                            highestRate: 3.35
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020002",
+                            productCode: "OKS2002",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "S",
+                            savingMethod: "정액적립식",
+                            savingMonth: "24",
+                            baseRate: 3.4,
+                            highestRate: 3.55
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020003",
+                            productCode: "WLS2003",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "S",
+                            savingMethod: "정액적립식",
+                            savingMonth: "12",
+                            baseRate: 3.3,
+                            highestRate: 3.6
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020003",
+                            productCode: "WLS2003",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "S",
+                            savingMethod: "정액적립식",
+                            savingMonth: "24",
+                            baseRate: 3.5,
+                            highestRate: 3.8
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020004",
+                            productCode: "KJS2004",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "F",
+                            savingMethod: "자유적립식",
+                            savingMonth: "6",
+                            baseRate: 3.1,
+                            highestRate: 3.35
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020004",
+                            productCode: "KJS2004",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "F",
+                            savingMethod: "자유적립식",
+                            savingMonth: "12",
+                            baseRate: 3.3,
+                            highestRate: 3.55
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020005",
+                            productCode: "PFS2005",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "S",
+                            savingMethod: "정액적립식",
+                            savingMonth: "12",
+                            baseRate: 3.2,
+                            highestRate: 3.4
+                        ),
+                        SavingProductRateInfo(
+                            dcls_month: "202503",
+                            companyCode: "0020005",
+                            productCode: "PFS2005",
+                            intr_rate_type: "S",
+                            rateMethod: "단리",
+                            rsrv_type: "S",
+                            savingMethod: "정액적립식",
+                            savingMonth: "24",
+                            baseRate: 3.4,
+                            highestRate: 3.6
+                        )
+                    ]
+                )
+            )
         case .firstBank:
             return SavingProductResponseDTO(
                 result: SavingProductResult(
