@@ -56,7 +56,7 @@ final class SearchViewCellSkeleton: BaseCollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        // 애니메이션 레이어 크기를 컨텐츠뷰 크기에 맞추기
+        // 컨텐츠뷰 크기가 잡힌 후에, 애니메이션 레이어 크기 동일하게 설정
         self.animationLayer?.frame = self.contentView.bounds
     }
     
@@ -139,6 +139,7 @@ final class SearchViewCellSkeleton: BaseCollectionViewCell {
         self.isActive = true
         
         self.animationLayer = self.getAnimationLayer()
+        self.animationLayer?.frame = self.contentView.bounds
 
         guard let layer = self.animationLayer else {
             return
