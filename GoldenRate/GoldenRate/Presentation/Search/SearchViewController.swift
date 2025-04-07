@@ -259,9 +259,9 @@ extension SearchViewController: UICollectionViewDelegate {
         
         switch item {
         case .deposit(let item):
-            self.navigationController?.pushViewController(SearchDetailViewController(data: item), animated: true)
+            self.navigationController?.pushViewController(ProductDetailViewController(data: item), animated: true)
         case .saving(let item):
-            self.navigationController?.pushViewController(SearchDetailViewController(data: item), animated: true)
+            self.navigationController?.pushViewController(ProductDetailViewController(data: item), animated: true)
         default:
             break
         }
