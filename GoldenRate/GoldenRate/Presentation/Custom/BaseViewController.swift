@@ -18,8 +18,9 @@ class BaseViewController: UIViewController, ConfigureProtocol {
         
         self.configureDefaultSetting()
         self.configureHierarchy()
-        self.configureLayout()
+        // TODO: 계산기뷰 구현 오류 해결을 위한 임시 순서 변경
         self.configureView()
+        self.configureLayout()
         self.bind()
     }
     
