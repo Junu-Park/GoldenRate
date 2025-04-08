@@ -16,36 +16,54 @@ final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tabBar.layer.cornerRadius = self.tabBar.frame.height / 2
+        let tabAppearance = UITabBarAppearance()
+        tabAppearance.backgroundColor = .defaultBackground
+        self.tabBar.standardAppearance = tabAppearance
+        self.tabBar.scrollEdgeAppearance = tabAppearance
+
         self.tabBar.layer.shadowColor = UIColor.defaultGray.cgColor
-        self.tabBar.layer.shadowOpacity = 0.2
+        self.tabBar.layer.shadowOpacity = 0.1
         self.tabBar.unselectedItemTintColor = .defaultGray
         self.tabBar.tintColor = .defaultText
-        self.tabBar.backgroundColor = .defaultBackground
         
-        let homeRepo = MockHomeRepository()
+        let navigationAppearance = UINavigationBarAppearance()
+        navigationAppearance.configureWithTransparentBackground()
+        
+        let homeRepo = RealHomeRepository()
         let homeVM = HomeViewModel(repository: homeRepo)
         let homeVC = HomeViewController(viewModel: homeVM)
+        homeVC.navigationItem.backButtonDisplayMode = .minimal
+        homeVC.navigationItem.standardAppearance = navigationAppearance
+        homeVC.navigationItem.scrollEdgeAppearance = navigationAppearance
+        let homeNC = UINavigationController(rootViewController: homeVC)
         let homeTab = UITabBarItem(title: StringConstant.homeTabTitle.localized(), image: .home, tag: 0)
         homeTab.setTitleTextAttributes([.font: UIFont.bold10], for: .normal)
-        homeVC.tabBarItem = homeTab
+        homeNC.tabBarItem = homeTab
         
-        let searchVC = SearchViewController()
+        let searchRepo = RealSearchRepository()
+        let searchVM = SearchViewModel(repository: searchRepo)
+        let searchVC = SearchViewController(viewModel: searchVM)
+        searchVC.navigationItem.backButtonDisplayMode = .minimal
+        searchVC.navigationItem.standardAppearance = navigationAppearance
+        searchVC.navigationItem.scrollEdgeAppearance = navigationAppearance
+        let searchNC = UINavigationController(rootViewController: searchVC)
         let searchTab = UITabBarItem(title: StringConstant.searchTabTitle.localized(), image: .search, tag: 1)
         searchTab.setTitleTextAttributes([.font: UIFont.bold10], for: .normal)
-        searchVC.tabBarItem = searchTab
+        searchNC.tabBarItem = searchTab
         
         let calculatorVC = CalculatorViewController()
         let calculatorTab = UITabBarItem(title: StringConstant.calculatorTabTitle.localized(), image: .percent, tag: 2)
         calculatorTab.setTitleTextAttributes([.font: UIFont.bold10], for: .normal)
         calculatorVC.tabBarItem = calculatorTab
         
+        /*
         let moreVC = MoreViewController()
         let moreTab = UITabBarItem(title: StringConstant.moreTabTitle.localized(), image: .more, tag: 3)
         moreTab.setTitleTextAttributes([.font: UIFont.bold10], for: .normal)
         moreVC.tabBarItem = moreTab
+        */
         
-        self.setViewControllers([homeVC, searchVC, calculatorVC, moreVC], animated: true)
+        self.setViewControllers([homeNC, searchNC, calculatorVC], animated: true)
     }
     
     @available(*, unavailable)
