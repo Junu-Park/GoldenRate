@@ -104,12 +104,17 @@ final class CalculatorResultView: BaseView {
             view.textColor = .defaultGray
         }
         
-        [self.principalValueLabel, self.preTaxInterestValueLabel, self.taxValueLabel, self.afterTaxInterestValueLabel, self.totalValueLabel].forEach { view in
+        [self.principalValueLabel, self.preTaxInterestValueLabel, self.taxValueLabel, self.afterTaxInterestValueLabel].forEach { view in
             view.text = "0원"
             view.font = .bold16
             view.textColor = .defaultText
             view.textAlignment = .right
         }
+
+        self.totalValueLabel.text = "0원"
+        self.totalValueLabel.font = .bold16
+        self.totalValueLabel.textColor = .accent
+        self.totalValueLabel.textAlignment = .right
     }
     
     func setView(taxType: TaxType, principal: Int = 0, preTaxInterest: Int = 0, tax: Int = 0, afterTaxInterest: Int = 0, total: Int = 0) {
