@@ -7,7 +7,7 @@
 
 import Combine
 
-struct CalculatorViewModel: ViewModel {
+final class CalculatorViewModel: ViewModel {
     struct Input {
         
     }
