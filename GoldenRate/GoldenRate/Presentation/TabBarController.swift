@@ -51,7 +51,7 @@ final class TabBarController: UITabBarController {
         searchTab.setTitleTextAttributes([.font: UIFont.bold10], for: .normal)
         searchNC.tabBarItem = searchTab
         
-        let calculatorVC = CalculatorViewController()
+        let calculatorVC = RenewalCalculatorViewController()
         let calculatorTab = UITabBarItem(title: StringConstant.calculatorTabTitle.localized(), image: .percent, tag: 2)
         calculatorTab.setTitleTextAttributes([.font: UIFont.bold10], for: .normal)
         calculatorVC.tabBarItem = calculatorTab
