@@ -174,6 +174,7 @@ private struct LatestRateTextView: View {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview(as: .systemSmall) {
     GoldenRateWidget()
 } timeline: {
