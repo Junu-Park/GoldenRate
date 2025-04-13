@@ -22,7 +22,7 @@ final class HomeViewModel: ViewModel {
     }
     
     private let repository: HomeRepository
-    private var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
+    private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
     
     init(repository: HomeRepository) {
         self.repository = repository
@@ -53,7 +53,7 @@ final class HomeViewModel: ViewModel {
                     }
                 }
             }
-            .store(in: &self.cancellable)
+            .store(in: &self.cancellables)
         
         input.getDepositProductTopData
             .sink { [weak self] _ in
@@ -79,7 +79,7 @@ final class HomeViewModel: ViewModel {
                     }
                 }
             }
-            .store(in: &self.cancellable)
+            .store(in: &self.cancellables)
         
         input.getSavingProductTopData
             .sink { [weak self] _ in
@@ -105,7 +105,7 @@ final class HomeViewModel: ViewModel {
                     }
                 }
             }
-            .store(in: &self.cancellable)
+            .store(in: &self.cancellables)
         
         return Output(rateChartData: rateChartData.eraseToAnyPublisher(), depositProductTopData: depositProductTopData.eraseToAnyPublisher(), savingProductTopData: savingProductTopData.eraseToAnyPublisher())
     }

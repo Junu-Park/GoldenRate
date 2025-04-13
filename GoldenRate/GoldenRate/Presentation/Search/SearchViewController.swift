@@ -25,7 +25,7 @@ final class SearchViewController: BaseViewController {
         }
     }
     private let viewModel: SearchViewModel
-    private var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
+    private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
     
     init(viewModel: SearchViewModel) {
         self.viewModel = viewModel
@@ -117,7 +117,7 @@ final class SearchViewController: BaseViewController {
             .sink { value in
                 getProductData.send(value)
             }
-            .store(in: &self.cancellable)
+            .store(in: &self.cancellables)
         
         let input = SearchViewModel.Input(initProductData: Just(()).eraseToAnyPublisher(), getProductData: getProductData.eraseToAnyPublisher())
         let output = self.viewModel.transform(input: input)
@@ -131,7 +131,7 @@ final class SearchViewController: BaseViewController {
 
                 self.updateSnapshot(productType: .deposit, data: dataArray)
             }
-            .store(in: &self.cancellable)
+            .store(in: &self.cancellables)
         
         output.savingProductData
             .receive(on: DispatchQueue.main)
@@ -142,7 +142,7 @@ final class SearchViewController: BaseViewController {
                 
                 self.updateSnapshot(productType: .saving, data: dataArray)
             }
-            .store(in: &self.cancellable)
+            .store(in: &self.cancellables)
     }
     
     private func updateSnapshot<T: Hashable>(productType: ProductType, data: [T]) {

@@ -17,7 +17,7 @@ final class HomeViewController: BaseViewController {
     private lazy var homeCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: self.configureCollectionViewLayout())
     
     private let viewModel: HomeViewModel
-    private var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
+    private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
     
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -67,7 +67,7 @@ final class HomeViewController: BaseViewController {
                 
                 self.updateSnapshot(chartData: chartData, depositData: depositProducts, savingData: savingProducts)
             }
-            .store(in: &self.cancellable)
+            .store(in: &self.cancellables)
     }
 }
 

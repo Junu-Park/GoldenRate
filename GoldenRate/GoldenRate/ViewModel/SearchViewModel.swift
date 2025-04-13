@@ -23,7 +23,7 @@ final class SearchViewModel: ViewModel {
     private var savingEntityDataArr: [SavingProductEntity] = []
     private var filter: SearchFilter = SearchFilter()
     private let repository: SearchRepository
-    private var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
+    private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
     
     init(repository: SearchRepository) {
         self.repository = repository
@@ -93,7 +93,7 @@ final class SearchViewModel: ViewModel {
                     }
                 }
             }
-            .store(in: &self.cancellable)
+            .store(in: &self.cancellables)
         
         input.getProductData
             .sink { [weak self] (searchFilter, productType) in
@@ -113,7 +113,7 @@ final class SearchViewModel: ViewModel {
                     }
                 }
             }
-            .store(in: &self.cancellable)
+            .store(in: &self.cancellables)
         
         return Output(depositProductData: depositProductData.eraseToAnyPublisher(), savingProductData: savingProductData.eraseToAnyPublisher())
     }

@@ -25,7 +25,7 @@ final class CalculatorViewModel: ViewModel {
         var total: AnyPublisher<String, Never>
     }
     
-    private var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
+    private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
     
     func transform(input: Input) -> Output {
         let principalAmount = CurrentValueSubject<String, Never>("0원")
