@@ -9,6 +9,7 @@ import Combine
 
 final class CalculatorViewModel: ViewModel {
     struct Input {
+        var productType: AnyPublisher<ProductType, Never>
         var amount: AnyPublisher<Double, Never>
         var interestRate: AnyPublisher<Double, Never>
         var period: AnyPublisher<Double, Never>
