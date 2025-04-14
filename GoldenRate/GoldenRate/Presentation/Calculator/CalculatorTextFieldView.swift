@@ -183,3 +183,16 @@ extension CalculatorTextFieldView: UITextFieldDelegate {
         }
     }
 }
+
+extension CalculatorTextFieldView {
+    var publisher: AnyPublisher<String, Never> {
+        return NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: self.textField)
+            .compactMap { [weak self] _ in
+                guard let self, let text = self.textField.text else {
+                    return nil
+                }
+                return text.replacingOccurrences(of: ",", with: "")
+            }
+            .eraseToAnyPublisher()
+    }
+}
