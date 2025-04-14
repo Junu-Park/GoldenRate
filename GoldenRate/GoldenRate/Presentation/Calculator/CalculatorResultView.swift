@@ -104,25 +104,20 @@ final class CalculatorResultView: BaseView {
             view.textColor = .defaultGray
         }
         
-        [self.principalValueLabel, self.preTaxInterestValueLabel, self.taxValueLabel, self.afterTaxInterestValueLabel].forEach { view in
-            view.text = "0원"
+        [self.principalValueLabel, self.preTaxInterestValueLabel, self.taxValueLabel, self.afterTaxInterestValueLabel, self.totalValueLabel].forEach { view in
             view.font = .bold16
             view.textColor = .defaultText
             view.textAlignment = .right
         }
-
-        self.totalValueLabel.text = "0원"
-        self.totalValueLabel.font = .bold16
         self.totalValueLabel.textColor = .accent
-        self.totalValueLabel.textAlignment = .right
     }
     
-    func setView(taxType: TaxType, principal: Int = 0, preTaxInterest: Int = 0, tax: Int = 0, afterTaxInterest: Int = 0, total: Int = 0) {
+    func setView(taxType: TaxType, principal: String, preTaxInterest: String, tax: String, afterTaxInterest: String, total: String) {
         self.taxTitleLabel.attributedText = .init(totalString: "이자 세금(\(taxType.percent)%)", totalColor: .defaultGray, totalFont: .thin16, targetString: "이자 세금", targetColor: .defaultGray, targetFont: .regular16)
-        self.principalValueLabel.text = "\(principal.formatted())원"
-        self.preTaxInterestValueLabel.text = "\(preTaxInterest.formatted())원"
-        self.taxValueLabel.text = "\(tax.formatted())원"
-        self.afterTaxInterestValueLabel.text = "\(afterTaxInterest.formatted())원"
-        self.totalValueLabel.text = "\(total.formatted())원"
+        self.principalValueLabel.text = principal
+        self.preTaxInterestValueLabel.text = preTaxInterest
+        self.taxValueLabel.text = tax
+        self.afterTaxInterestValueLabel.text = afterTaxInterest
+        self.totalValueLabel.text = total
     }
 }
