@@ -5,6 +5,7 @@
 //  Created by 박준우 on 3/27/25.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
@@ -19,6 +20,14 @@ final class RenewalCalculatorViewController: BaseViewController {
     private let taxTitleLabel: UILabel = UILabel()
     private let taxTypeSegmentedControl: CustomSegmentedControl = CustomSegmentedControl<TaxType>(items: TaxType.allCases)
     private let resultView: CalculatorResultView = CalculatorResultView()
+    
+    private let viewModel: CalculatorViewModel
+    private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
+    
+    init(viewModel: CalculatorViewModel) {
+        self.viewModel = viewModel
+        super.init()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,161 +84,89 @@ final class RenewalCalculatorViewController: BaseViewController {
         self.taxTitleLabel.text = "이자 세율"
         self.taxTitleLabel.font = .bold16
         self.taxTitleLabel.textColor = .text
+    }
+    
+    override func bind() {
+        let productType = CurrentValueSubject<ProductType, Never>(.deposit)
+        let amount = CurrentValueSubject<Double, Never>(0)
+        let interestRate = CurrentValueSubject<Double, Never>(0)
+        let period = CurrentValueSubject<Double, Never>(0)
+        let periodType = CurrentValueSubject<PeriodType, Never>(.year)
+        let taxType = CurrentValueSubject<TaxType, Never>(.general)
         
-        self.productTypeSegmentedControl.addTarget(self, action: #selector(self.productSegmentValueChanged), for: .valueChanged)
-        self.periodTypeSegmentedControl.addTarget(self, action: #selector(self.periodSegmentValueChanged), for: .valueChanged)
-        self.taxTypeSegmentedControl.addTarget(self, action: #selector(self.taxSegmentValueChanged), for: .valueChanged)
+        self.productTypeSegmentedControl
+            .publisher
+            .sink { type in
+                self.dismissKeyboard()
+                self.amountTextField.setView(calculatorTextFieldType: .amount(productType: type))
+                productType.send(type)
+            }
+            .store(in: &self.cancellables)
         
-        self.amountTextField.textFieldClosure = { amount in
-            let taxValue = TaxType.allCases[self.taxTypeSegmentedControl.selectedSegmentIndex]
-            
-            guard amount != 0, let interest = self.interestRateTextField.getTextValue(), let period = self.periodTextField.getTextValue() else {
-                self.resultView.setView(taxType: taxValue)
-                return
+        self.amountTextField
+            .publisher
+            .sink { value in
+                amount.send(Double(value) ?? 0)
             }
-            
-            let (principal, preTaxInterest, tax, afterTaxInterest, total) = self.calculate(amount: Int(amount), interestRate: Double(interest) ?? 0, period: Int(period) ?? 0)
-            
-            self.resultView.setView(taxType: taxValue, principal: principal, preTaxInterest: preTaxInterest, tax: tax, afterTaxInterest: afterTaxInterest, total: total)
-        }
-        self.interestRateTextField.textFieldClosure = { interestRate in
-            let taxValue = TaxType.allCases[self.taxTypeSegmentedControl.selectedSegmentIndex]
-            
-            if interestRate == 0 || Int(self.periodTextField.getTextValue() ?? "0") == 0 {
-                let amount = Int(self.amountTextField.getTextValue() ?? "0") ?? 0
-                
-                let productValue = ProductType.allCases[self.productTypeSegmentedControl.selectedSegmentIndex]
-                
-                if productValue == .saving {
-                    let periodValue = Int(self.periodTextField.getTextValue() ?? "0") ?? 0
-                    self.resultView.setView(taxType: taxValue, principal: amount * periodValue)
-                    return
-                }
-                
-                self.resultView.setView(taxType: taxValue, principal: amount, total: amount)
-                return
+            .store(in: &self.cancellables)
+        
+        self.interestRateTextField
+            .publisher
+            .sink { value in
+                interestRate.send(Double(value) ?? 0)
             }
-            
-            guard let amount = self.amountTextField.getTextValue(), let period = self.periodTextField.getTextValue() else {
-                self.resultView.setView(taxType: taxValue)
-                return
+            .store(in: &self.cancellables)
+        
+        self.periodTextField
+            .publisher
+            .sink { value in
+                period.send(Double(value) ?? 0)
             }
-            
-            let (principal, preTaxInterest, tax, afterTaxInterest, total) = self.calculate(amount: Int(amount) ?? 0, interestRate: interestRate, period: Int(period) ?? 0)
-            
-            self.resultView.setView(taxType: taxValue, principal: principal, preTaxInterest: preTaxInterest, tax: tax, afterTaxInterest: afterTaxInterest, total: total)
-        }
-        self.periodTextField.textFieldClosure = { period in
-            let taxValue = TaxType.allCases[self.taxTypeSegmentedControl.selectedSegmentIndex]
-            
-            if period == 0 || Int(self.interestRateTextField.getTextValue() ?? "0") == 0 {
-                let amount = Int(self.amountTextField.getTextValue() ?? "0") ?? 0
-                
-                let productValue = ProductType.allCases[self.productTypeSegmentedControl.selectedSegmentIndex]
-                
-                if productValue == .saving {
-                    let periodValue = Int(self.periodTextField.getTextValue() ?? "0") ?? 0
-                    self.resultView.setView(taxType: taxValue, principal: amount * periodValue)
-                    return
-                }
-                
-                self.resultView.setView(taxType: taxValue, principal: amount, total: amount)
-                return
+            .store(in: &self.cancellables)
+        
+        self.periodTypeSegmentedControl
+            .publisher
+            .sink { type in
+                self.dismissKeyboard()
+                self.periodTextField.setView(calculatorTextFieldType: .period(periodType: type))
+                periodType.send(type)
             }
-            
-            guard let amount = self.amountTextField.getTextValue(), let interest = self.interestRateTextField.getTextValue() else {
-                self.resultView.setView(taxType: taxValue)
-                return
+            .store(in: &self.cancellables)
+        
+        self.taxTypeSegmentedControl
+            .publisher
+            .sink { type in
+                self.dismissKeyboard()
+                taxType.send(type)
             }
-            
-            let (principal, preTaxInterest, tax, afterTaxInterest, total) = self.calculate(amount: Int(amount) ?? 0, interestRate: Double(interest) ?? 0, period: Int(period))
-            
-            self.resultView.setView(taxType: taxValue, principal: principal, preTaxInterest: preTaxInterest, tax: tax, afterTaxInterest: afterTaxInterest, total: total)
-        }
+            .store(in: &self.cancellables)
+        
+        let input = CalculatorViewModel.Input(
+            productType: productType.eraseToAnyPublisher(),
+            amount: amount.eraseToAnyPublisher(),
+            interestRate: interestRate.eraseToAnyPublisher(),
+            period: period.eraseToAnyPublisher(),
+            periodType: periodType.eraseToAnyPublisher(),
+            taxType: taxType.eraseToAnyPublisher()
+        )
+        let output = self.viewModel.transform(input: input)
+        
+        let firstCombineLatest = Publishers.CombineLatest3(output.principalAmount, output.preTaxInterest, output.tax)
+        let secondCombineLatest = Publishers.CombineLatest(output.afterTaxInterest, output.total)
+        firstCombineLatest.combineLatest(secondCombineLatest)
+            .receive(on: DispatchQueue.main)
+            .map { (first, second) -> (String, String, String, String, String) in
+                
+                return (first.0, first.1, first.2, second.0, second.1)
+            }
+            .sink { principal, preTaxInterest, tax, afterTaxInterest, total in
+                let taxType = self.taxTypeSegmentedControl.items[self.taxTypeSegmentedControl.selectedSegmentIndex]
+                self.resultView.setView(taxType: taxType, principal: principal, preTaxInterest: preTaxInterest, tax: tax, afterTaxInterest: afterTaxInterest, total: total)
+            }
+            .store(in: &self.cancellables)
     }
     
     @objc private func dismissKeyboard() {
         self.view.endEditing(true)
-    }
-    
-    @objc private func productSegmentValueChanged(_ sender: UISegmentedControl) {
-        self.dismissKeyboard()
-        
-        let productValue = ProductType.allCases[sender.selectedSegmentIndex]
-        self.amountTextField.setView(calculatorTextFieldType: .amount(productType: productValue))
-        self.amountTextField.setTextValue()
-        
-        self.interestRateTextField.setTextValue()
-        
-        self.periodTextField.setTextValue()
-        
-        self.periodTypeSegmentedControl.selectedSegmentIndex = 0
-        self.periodTypeSegmentedControl.sendActions(for: .valueChanged)
-        
-        self.taxTypeSegmentedControl.selectedSegmentIndex = 0
-        self.taxTypeSegmentedControl.sendActions(for: .valueChanged)
-        
-        self.resultView.setView(taxType: .general)
-    }
-    @objc private func periodSegmentValueChanged(_ sender: UISegmentedControl) {
-        self.dismissKeyboard()
-        
-        let periodValue = PeriodType.allCases[sender.selectedSegmentIndex]
-        self.periodTextField.setView(calculatorTextFieldType: .period(periodType: periodValue))
-        
-        let taxValue = TaxType.allCases[self.taxTypeSegmentedControl.selectedSegmentIndex]
-        
-        guard let amount = self.amountTextField.getTextValue(), let interest = self.interestRateTextField.getTextValue(), let period = self.periodTextField.getTextValue() else {
-            self.resultView.setView(taxType: taxValue)
-            return
-        }
-        
-        let (principal, preTaxInterest, tax, afterTaxInterest, total) = self.calculate(amount: Int(amount) ?? 0, interestRate: Double(interest) ?? 0, period: Int(period) ?? 0)
-        
-        self.resultView.setView(taxType: taxValue, principal: principal, preTaxInterest: preTaxInterest, tax: tax, afterTaxInterest: afterTaxInterest, total: total)
-    }
-    @objc private func taxSegmentValueChanged(_ sender: UISegmentedControl) {
-        self.dismissKeyboard()
-        
-        let taxValue = TaxType.allCases[sender.selectedSegmentIndex]
-        
-        guard let amount = self.amountTextField.getTextValue(), let interest = self.interestRateTextField.getTextValue(), let period = self.periodTextField.getTextValue() else {
-            self.resultView.setView(taxType: taxValue)
-            return
-        }
-        
-        let (principal, preTaxInterest, tax, afterTaxInterest, total) = self.calculate(amount: Int(amount) ?? 0, interestRate: Double(interest) ?? 0, period: Int(period) ?? 0)
-        
-        self.resultView.setView(taxType: taxValue, principal: principal, preTaxInterest: preTaxInterest, tax: tax, afterTaxInterest: afterTaxInterest, total: total)
-    }
-    
-    private func calculate(amount: Int, interestRate: Double, period: Int) -> (Int, Int, Int, Int, Int) {
-        let interestRateDecimal = interestRate / 100
-        let taxRateDecimal = TaxType.allCases[self.taxTypeSegmentedControl.selectedSegmentIndex].percent / 100
-        let periodMonth = PeriodType.allCases[self.periodTypeSegmentedControl.selectedSegmentIndex] == .month ? period : period * 12
-        
-        var principal = 0
-        var preTaxInterest = 0
-        var tax = 0
-        var afterTaxInterest = 0
-        var total = 0
-        
-        switch ProductType.allCases[self.productTypeSegmentedControl.selectedSegmentIndex] {
-        case .deposit:
-            principal = amount
-            preTaxInterest = Int(Double(amount) * interestRateDecimal * (Double(periodMonth) / 12))
-            tax = Int(Double(preTaxInterest) * taxRateDecimal)
-            afterTaxInterest = preTaxInterest - tax
-            total = amount + afterTaxInterest
-        case .saving:
-            let averageMonth = (periodMonth + 1) / 2
-            principal = amount * periodMonth
-            preTaxInterest = Int(Double(amount) * Double(averageMonth) * interestRateDecimal * Double(periodMonth) / 12)
-            tax = Int(Double(preTaxInterest) * taxRateDecimal)
-            afterTaxInterest = preTaxInterest - tax
-            total = (amount * periodMonth) + afterTaxInterest
-        }
-        
-        return (principal, preTaxInterest, tax, afterTaxInterest, total)
     }
 }
