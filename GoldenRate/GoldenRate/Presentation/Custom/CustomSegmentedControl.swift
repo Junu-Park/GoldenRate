@@ -5,13 +5,15 @@
 //  Created by 박준우 on 4/2/25.
 //
 
+import Combine
 import UIKit
 
 final class CustomSegmentedControl<T: RawRepresentable>: UISegmentedControl where T.RawValue == String {
-    
+    let items: [T]
     private lazy var underline: UIView = UIView()
     
     init(items: [T], isDynamicSize: Bool = false) {
+        self.items = items
         super.init(items: [])
         
         self.apportionsSegmentWidthsByContent = isDynamicSize
@@ -67,11 +69,33 @@ final class CustomSegmentedControl<T: RawRepresentable>: UISegmentedControl wher
             }
             self.layoutIfNeeded()
         }
+        
+        // Segment가 변경되면 Publisher에 신호 전달
+        NotificationCenter.default.post(
+            name: Notification.Name("segmentedControlValueChanged<\(type(of: self.items.first!))>"),
+            object: self
+        )
+        
         return self.selectedSegmentIndex
     }
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension CustomSegmentedControl {
+    var publisher: AnyPublisher<T, Never> {
+        
+        return NotificationCenter.default.publisher(for: Notification.Name("segmentedControlValueChanged<\(type(of: self.items.first!))>"), object: self)
+            .compactMap { [weak self] _ in
+                guard let self else {
+                    return nil
+                }
+                
+                return self.items[self.selectedSegmentIndex]
+            }
+            .eraseToAnyPublisher()
     }
 }
