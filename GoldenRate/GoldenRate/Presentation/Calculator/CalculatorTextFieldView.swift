@@ -135,7 +135,25 @@ extension CalculatorTextFieldView: UITextFieldDelegate {
             return true
         }
         
-        if string == ".", let text = textField.text, text.contains(string) {
+        guard let text = textField.text else {
+            return false
+        }
+        
+        if string == "." && text.contains(string) {
+            return false
+        }
+        
+        let totalString = text + string
+        let value = Double(totalString.replacingOccurrences(of: ",", with: "")) ?? 0
+        if (self.type == .amount(productType: .deposit) || self.type == .amount(productType: .saving)) && value > 1000000000000 {
+            return false
+        }
+        
+        if self.type == .interestRate && value > 100 {
+            return false
+        }
+        
+        if (self.type == .period(periodType: .year) || self.type == .period(periodType: .month)) && value > 1000 {
             return false
         }
         
