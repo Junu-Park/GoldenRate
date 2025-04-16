@@ -5,6 +5,7 @@
 //  Created by 박준우 on 4/10/25.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
@@ -44,7 +45,6 @@ final class CalculatorTextFieldView: BaseView {
     private let unitLabel: UILabel = UILabel()
     
     private var type: CalculatorTextFieldType
-    var textFieldClosure: ((Double) -> ())?
     
     init(calculatorTextFieldType: CalculatorTextFieldType) {
         self.type = calculatorTextFieldType
@@ -109,23 +109,6 @@ final class CalculatorTextFieldView: BaseView {
         
         self.unitLabel.text = calculatorTextFieldType.unit
     }
-    
-    func getTextValue() -> String? {
-        guard let text = self.textField.text else {
-            return nil
-        }
-        
-        let filteredText = text.replacingOccurrences(of: ",", with: "")
-        
-        return filteredText
-    }
-    
-    func setTextValue(value: String? = nil) {
-        self.textField.text = value
-        if value != nil {
-            self.textField.sendActions(for: .valueChanged)
-        }
-    }
 }
 
 extension CalculatorTextFieldView: UITextFieldDelegate {
@@ -165,7 +148,6 @@ extension CalculatorTextFieldView: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         guard let text = textField.text, !text.isEmpty else {
-            self.textFieldClosure?(0)
             return
         }
         
@@ -177,17 +159,8 @@ extension CalculatorTextFieldView: UITextFieldDelegate {
         
         if filteredText.contains(".") {
             if filteredText.hasPrefix(".") {
-                if filteredText.count == 1 {
-                    self.textFieldClosure?(0)
-                } else {
-                    self.textFieldClosure?(Double("0" + filteredText) ?? 0)
-                }
                 self.textField.text = "0" + filteredText
-            } else if filteredText.hasSuffix(".") {
-                self.textFieldClosure?(Double(filteredText) ?? 0)
             } else {
-                self.textFieldClosure?(Double(filteredText) ?? 0)
-                
                 let separatedText = filteredText.components(separatedBy: ".")
                 let intText = separatedText[0]
                 let decimalText = separatedText[1]
@@ -196,7 +169,6 @@ extension CalculatorTextFieldView: UITextFieldDelegate {
             }
         } else {
             let doubleText = Double(filteredText) ?? 0
-            self.textFieldClosure?(doubleText)
             self.textField.text = doubleText.formatted()
         }
     }
