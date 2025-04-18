@@ -8,6 +8,8 @@
 import Charts
 import SwiftUI
 
+import FirebaseAnalytics
+
 struct RateChartView: View {
     
     @State private var rateDataList: [RateChartEntity]
@@ -110,6 +112,7 @@ struct RateChartView: View {
                 .gesture(
                     DragGesture(minimumDistance: 0)
                         .onChanged { value in
+                            Analytics.logEvent("RateChartView_Drag", parameters: nil)
                             if let data = proxy.value(atX: value.location.x, as: Date.self) {
                                 let (min, max) = self.getMinMaxDate()
                                 

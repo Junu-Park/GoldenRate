@@ -7,6 +7,7 @@
 
 import UIKit
 
+import FirebaseAnalytics
 import SnapKit
 
 final class SearchFilterViewController: BaseViewController {
@@ -110,6 +111,7 @@ final class SearchFilterViewController: BaseViewController {
     }
     
     @objc private func applyButtonTapped() {
+        Analytics.logEvent("SearchFilterApplyButton_Tap", parameters: ["financialCompanyType": self.filter.financialCompanyType.rawValue, "interestRateType": self.filter.interestRateType.rawValue, "productSortType": self.filter.productSortType.rawValue])
         self.applyClosure?(self.filter)
         self.dismiss(animated: true)
     }
