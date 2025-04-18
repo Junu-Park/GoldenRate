@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		510AB4812D9578E9004F23C7 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 510AB4802D9578E9004F23C7 /* SnapKit */; };
+		51480E262DB78833007876B4 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 51480E252DB78833007876B4 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				510AB4812D9578E9004F23C7 /* SnapKit in Frameworks */,
+				51480E262DB78833007876B4 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +86,7 @@
 			name = GoldenRate;
 			packageProductDependencies = (
 				510AB4802D9578E9004F23C7 /* SnapKit */,
+				51480E252DB78833007876B4 /* FirebaseAnalyticsWithoutAdIdSupport */,
 			);
 			productName = GoldenRate;
 			productReference = 510AB32D2D92C7D3004F23C7 /* GoldenRate.app */;
@@ -116,6 +119,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				510AB47F2D9578E9004F23C7 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				51480E242DB78833007876B4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 510AB32E2D92C7D3004F23C7 /* Products */;
@@ -373,6 +377,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		51480E242DB78833007876B4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.12.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -380,6 +392,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 510AB47F2D9578E9004F23C7 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		51480E252DB78833007876B4 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 51480E242DB78833007876B4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
