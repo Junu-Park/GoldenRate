@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		510AB4812D9578E9004F23C7 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 510AB4802D9578E9004F23C7 /* SnapKit */; };
 		51480E262DB78833007876B4 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 51480E252DB78833007876B4 /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		514811412DB7C98C007876B4 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 514811402DB7C98C007876B4 /* FirebaseCrashlytics */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				514811412DB7C98C007876B4 /* FirebaseCrashlytics in Frameworks */,
 				510AB4812D9578E9004F23C7 /* SnapKit in Frameworks */,
 				51480E262DB78833007876B4 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 			);
@@ -53,6 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				510AB32F2D92C7D3004F23C7 /* GoldenRate */,
+				5148113F2DB7C98C007876B4 /* Frameworks */,
 				510AB32E2D92C7D3004F23C7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -63,6 +66,13 @@
 				510AB32D2D92C7D3004F23C7 /* GoldenRate.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5148113F2DB7C98C007876B4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,6 +97,7 @@
 			packageProductDependencies = (
 				510AB4802D9578E9004F23C7 /* SnapKit */,
 				51480E252DB78833007876B4 /* FirebaseAnalyticsWithoutAdIdSupport */,
+				514811402DB7C98C007876B4 /* FirebaseCrashlytics */,
 			);
 			productName = GoldenRate;
 			productReference = 510AB32D2D92C7D3004F23C7 /* GoldenRate.app */;
@@ -399,6 +410,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 51480E242DB78833007876B4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		514811402DB7C98C007876B4 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 51480E242DB78833007876B4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
