@@ -71,13 +71,6 @@
 			);
 			target = 514818B42DB8CBBD007876B4 /* GoldenRateWidgetExtension */;
 		};
-		514819A82DB8E2D0007876B4 /* Exceptions for "GoldenRateWidget" folder in "GoldenRate" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				LatestRateType.swift,
-			);
-			target = 510AB32C2D92C7D3004F23C7 /* GoldenRate */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -93,7 +86,6 @@
 		514818BA2DB8CBBD007876B4 /* GoldenRateWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				514819A82DB8E2D0007876B4 /* Exceptions for "GoldenRateWidget" folder in "GoldenRate" target */,
 				514818C92DB8CBBF007876B4 /* Exceptions for "GoldenRateWidget" folder in "GoldenRateWidgetExtension" target */,
 			);
 			path = GoldenRateWidget;
