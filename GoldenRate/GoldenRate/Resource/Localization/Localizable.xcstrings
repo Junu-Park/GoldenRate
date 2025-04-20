@@ -22,6 +22,24 @@
     "Date" : {
       "comment" : "LabelKey로 사용"
     },
+    "goldenRate" : {
+      "comment" : "앱 이름",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GoldenRate"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "금니"
+          }
+        }
+      }
+    },
     "homeTabTitle" : {
       "comment" : "홈탭 타이틀",
       "extractionState" : "manual",
@@ -36,6 +54,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "홈"
+          }
+        }
+      }
+    },
+    "latestInterestRate" : {
+      "comment" : "위젯 추가 설명",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latest InterestRate"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "최근 금리"
           }
         }
       }
