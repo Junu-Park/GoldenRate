@@ -143,8 +143,8 @@
 				510AB3292D92C7D3004F23C7 /* Sources */,
 				510AB32A2D92C7D3004F23C7 /* Frameworks */,
 				510AB32B2D92C7D3004F23C7 /* Resources */,
-				514812072DB7CBBA007876B4 /* ShellScript */,
 				514818C42DB8CBBF007876B4 /* Embed Foundation Extensions */,
+				514812072DB7CBBA007876B4 /* ShellScript */,
 			);
 			buildRules = (
 			);
