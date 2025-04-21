@@ -66,6 +66,8 @@
 			membershipExceptions = (
 				App/APIConfig.xcconfig,
 				Data/Network/APIConfig.swift,
+				Data/Network/APIRouter.swift,
+				Model/DTO/RateResponseDTO.swift,
 				Resource/Color/Color.xcassets,
 				"Resource/Font/+Font.swift",
 				"Resource/Font/Pretendard-Bold.ttf",
