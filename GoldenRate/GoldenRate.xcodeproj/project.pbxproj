@@ -64,6 +64,8 @@
 		514819A02DB8D6F3007876B4 /* Exceptions for "GoldenRate" folder in "GoldenRateWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				App/APIConfig.xcconfig,
+				Data/Network/APIConfig.swift,
 				Resource/Color/Color.xcassets,
 				"Resource/Font/+Font.swift",
 				"Resource/Font/Pretendard-Bold.ttf",
