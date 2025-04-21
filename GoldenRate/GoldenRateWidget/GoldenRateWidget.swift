@@ -5,27 +5,27 @@
 //  Created by 박준우 on 4/20/25.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), emoji: "😀")
+    func placeholder(in context: Context) -> LatestInterestRateEntry {
+        LatestInterestRateEntry(date: .now, entityList: LatestInterestRateEntity.mock)
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), emoji: "😀")
+    func getSnapshot(in context: Context, completion: @escaping (LatestInterestRateEntry) -> ()) {
+        let entry = LatestInterestRateEntry(date: Date(), entityList: LatestInterestRateEntity.mock)
         completion(entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
+        var entries: [LatestInterestRateEntry] = []
 
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
         let currentDate = Date()
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, emoji: "😀")
+            let entry = LatestInterestRateEntry(date: entryDate, entityList: LatestInterestRateEntity.mock)
             entries.append(entry)
         }
 
@@ -38,21 +38,38 @@ struct Provider: TimelineProvider {
 //    }
 }
 
-struct SimpleEntry: TimelineEntry {
+struct LatestInterestRateEntry: TimelineEntry {
     let date: Date
-    let emoji: String
+    let entityList: [LatestInterestRateEntity]
+    
+    func getDateString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yy/MM/dd HH:mm"
+        return formatter.string(from: self.date)
+    }
 }
 
 struct GoldenRateWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
+        VStack(alignment: .leading, spacing: 2) {
+            ForEach(entry.entityList, id: \.rateType) { entity in
+                LatestRateTextView(data: entity)
+            }
 
-            Text("Emoji:")
-            Text(entry.emoji)
+            Text(entry.getDateString())
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .foregroundStyle(.defaultGray)
+                .font(.bold10)
+        }
+        .shadow(color: .defaultGray, radius: 0.8)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .padding(8)
+        .background {
+            RoundedRectangle(cornerRadius: 15)
+                .fill(.defaultBackground)
+                .shadow(color: .defaultGray, radius: 3)
         }
     }
 }
@@ -64,21 +81,33 @@ struct GoldenRateWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             if #available(iOS 17.0, *) {
                 GoldenRateWidgetEntryView(entry: entry)
-                    .containerBackground(.fill.tertiary, for: .widget)
+                    .containerBackground(for: .widget, content: { Color.background })
+                    .padding(8)
             } else {
                 GoldenRateWidgetEntryView(entry: entry)
-                    .padding()
-                    .background()
+                    .background(Color.background)
+                    .padding(8)
             }
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("금니")
+        .description("latestInterestRate")
+        .contentMarginsDisabled()
+        .supportedFamilies([.systemSmall])
+    }
+}
+
+private struct LatestRateTextView: View {
+    
+    let data: LatestInterestRateEntity
+    
+    var body: some View {
+        Text(AttributedString(totalString: self.data.rateType.title, totalColor: .defaultGray, totalFont: .bold14, targetString: self.data.rateType.targetTitle, targetColor: self.data.rateType.color, targetFont: .bold14))
+        Text(AttributedString(totalString: "\(self.data.changeSymbol()) \(String(format: "%.2f", self.data.currentRate))%", totalColor: .defaultText, totalFont: .bold14, targetString: self.data.changeSymbol(), targetColor: self.data.changeColor(), targetFont: .bold14))
     }
 }
 
 #Preview(as: .systemSmall) {
     GoldenRateWidget()
 } timeline: {
-    SimpleEntry(date: .now, emoji: "😀")
-    SimpleEntry(date: .now, emoji: "🤩")
+    LatestInterestRateEntry(date: .now, entityList: LatestInterestRateEntity.mock)
 }
