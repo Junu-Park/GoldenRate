@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct LatestInterestRateEntity {
+struct LatestInterestRateEntity: Identifiable {
+    let id: UUID = UUID()
     let rateType: LatestRateType
     let previousRate: Double
     let currentRate: Double
@@ -15,7 +16,7 @@ struct LatestInterestRateEntity {
     /// 이전 금리에서 현재 금리 변화상태
     ///  -1: 하락, 0: 변화 없음. 1: 상승
     private func changeState() -> Int {
-        switch self.currentRate - self.previousRate {
+        switch (self.currentRate - self.previousRate) {
         case ..<0:
             return -1
         case 0:
