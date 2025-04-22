@@ -19,23 +19,60 @@ struct Provider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [LatestInterestRateEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = LatestInterestRateEntry(date: entryDate, entityList: LatestInterestRateEntity.mock)
-            entries.append(entry)
+        Task {
+            do {
+                let dataList = try await WidgetNetworkManager.shared.requestRateDataList()
+                let entityList: [LatestInterestRateEntity] = [
+                    try convertToEntity(response: dataList[0], type: .base),
+                    try convertToEntity(response: dataList[1], type: .first),
+                    try convertToEntity(response: dataList[2], type: .second),
+                ]
+                
+                var entries: [LatestInterestRateEntry] = []
+                for hourOffset in 0..<5 {
+                    let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: .now)!
+                    let entry = LatestInterestRateEntry(date: entryDate, entityList: entityList)
+                    entries.append(entry)
+                }
+                
+                let timeline = Timeline(entries: entries, policy: .atEnd)
+                completion(timeline)
+            } catch {
+                print("error: \(error)")
+                
+                let entry = LatestInterestRateEntry(date: Date(), entityList: [])
+                let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60)))
+                completion(timeline)
+            }
         }
-
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
     }
 
 //    func relevances() async -> WidgetRelevances<Void> {
 //        // Generate a list containing the contexts this widget is relevant in.
 //    }
+    
+    func convertToEntity(response: RateResponseDTO, type: LatestRateType) throws -> LatestInterestRateEntity {
+        
+        let listCount = response.statisticSearch.listTotalCount
+        
+        var list = response.statisticSearch.row
+        
+        if listCount == 0 {
+            throw NetworkError.noData
+        } else if listCount == 1 {
+            guard let lastValue = Double(list.last?.dataValue ?? "0") else {
+                throw NetworkError.noData
+            }
+            
+            return LatestInterestRateEntity(rateType: type, previousRate: lastValue, currentRate: lastValue)
+        } else {
+            guard let currentValue = Double(list.popLast()?.dataValue ?? "0"), let previousValue = Double(list.popLast()?.dataValue ?? "0") else {
+                throw NetworkError.noData
+            }
+            
+            return LatestInterestRateEntity(rateType: type, previousRate: previousValue, currentRate: currentValue)
+        }
+    }
 }
 
 struct LatestInterestRateEntry: TimelineEntry {
@@ -49,12 +86,12 @@ struct LatestInterestRateEntry: TimelineEntry {
     }
 }
 
-struct GoldenRateWidgetEntryView : View {
+struct GoldenRateWidgetEntryView: View {
     var entry: Provider.Entry
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            ForEach(entry.entityList, id: \.rateType) { entity in
+            ForEach(entry.entityList, id: \.id) { entity in
                 LatestRateTextView(data: entity)
             }
 
@@ -74,22 +111,51 @@ struct GoldenRateWidgetEntryView : View {
     }
 }
 
+struct GoldenRateWidgetEmptyView: View {
+    var body: some View {
+        Text("widgetNetworkErrorMessage")
+            .multilineTextAlignment(.center)
+            .foregroundStyle(.defaultGray)
+            .font(.bold14)
+            .shadow(color: .defaultGray, radius: 0.8)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            .padding(8)
+            .background {
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(.defaultBackground)
+                    .shadow(color: .defaultGray, radius: 3)
+            }
+    }
+}
+
 struct GoldenRateWidget: Widget {
     let kind: String = "GoldenRateWidget"
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            if #available(iOS 17.0, *) {
-                GoldenRateWidgetEntryView(entry: entry)
-                    .containerBackground(for: .widget, content: { Color.background })
-                    .padding(8)
+            if !entry.entityList.isEmpty {
+                if #available(iOS 17.0, *) {
+                    GoldenRateWidgetEntryView(entry: entry)
+                        .containerBackground(for: .widget, content: { Color.background })
+                        .padding(8)
+                } else {
+                    GoldenRateWidgetEntryView(entry: entry)
+                        .background(Color.background)
+                        .padding(8)
+                }
             } else {
-                GoldenRateWidgetEntryView(entry: entry)
-                    .background(Color.background)
-                    .padding(8)
+                if #available(iOS 17.0, *) {
+                    GoldenRateWidgetEmptyView()
+                        .containerBackground(for: .widget, content: { Color.background })
+                        .padding(8)
+                } else {
+                    GoldenRateWidgetEmptyView()
+                        .background(Color.background)
+                        .padding(8)
+                }
             }
         }
-        .configurationDisplayName("금니")
+        .configurationDisplayName("goldenRate")
         .description("latestInterestRate")
         .contentMarginsDisabled()
         .supportedFamilies([.systemSmall])
