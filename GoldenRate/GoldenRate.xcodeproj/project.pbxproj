@@ -57,7 +57,7 @@
 		514818C92DB8CBBF007876B4 /* Exceptions for "GoldenRateWidget" folder in "GoldenRateWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				App/Info.plist,
 			);
 			target = 514818B42DB8CBBD007876B4 /* GoldenRateWidgetExtension */;
 		};
@@ -518,7 +518,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6UR3X5MRY6;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GoldenRateWidget/Info.plist;
+				INFOPLIST_FILE = GoldenRateWidget/App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = GoldenRateWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -545,7 +545,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6UR3X5MRY6;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GoldenRateWidget/Info.plist;
+				INFOPLIST_FILE = GoldenRateWidget/App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = GoldenRateWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
