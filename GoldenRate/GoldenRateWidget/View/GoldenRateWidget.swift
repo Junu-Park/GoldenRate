@@ -81,7 +81,7 @@ struct LatestInterestRateEntry: TimelineEntry {
     
     func getDateString() -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yy/MM/dd HH:mm"
+        formatter.dateFormat = "yyyy년 MM월 dd일"
         return formatter.string(from: self.date)
     }
 }
@@ -94,7 +94,9 @@ struct GoldenRateWidgetEntryView: View {
             ForEach(entry.entityList, id: \.id) { entity in
                 LatestRateTextView(data: entity)
             }
-
+            
+            Spacer()
+            
             Text(entry.getDateString())
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .foregroundStyle(.defaultGray)
@@ -104,7 +106,7 @@ struct GoldenRateWidgetEntryView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .padding(8)
         .background {
-            RoundedRectangle(cornerRadius: 15)
+            RoundedRectangle(cornerRadius: 18)
                 .fill(.defaultBackground)
                 .shadow(color: .defaultGray, radius: 3)
         }
@@ -116,12 +118,12 @@ struct GoldenRateWidgetEmptyView: View {
         Text("widgetNetworkErrorMessage")
             .multilineTextAlignment(.center)
             .foregroundStyle(.defaultGray)
-            .font(.bold14)
+            .font(.bold12)
             .shadow(color: .defaultGray, radius: 0.8)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .padding(8)
             .background {
-                RoundedRectangle(cornerRadius: 15)
+                RoundedRectangle(cornerRadius: 18)
                     .fill(.defaultBackground)
                     .shadow(color: .defaultGray, radius: 3)
             }
@@ -167,8 +169,8 @@ private struct LatestRateTextView: View {
     let data: LatestInterestRateEntity
     
     var body: some View {
-        Text(AttributedString(totalString: self.data.rateType.title, totalColor: .defaultGray, totalFont: .bold14, targetString: self.data.rateType.targetTitle, targetColor: self.data.rateType.color, targetFont: .bold14))
-        Text(AttributedString(totalString: "\(self.data.changeSymbol()) \(String(format: "%.2f", self.data.currentRate))%", totalColor: .defaultText, totalFont: .bold14, targetString: self.data.changeSymbol(), targetColor: self.data.changeColor(), targetFont: .bold14))
+        Text(AttributedString(totalString: self.data.rateType.title, totalColor: .defaultGray, totalFont: .bold12, targetString: self.data.rateType.targetTitle, targetColor: self.data.rateType.color, targetFont: .bold12))
+        Text(AttributedString(totalString: "\(self.data.changeSymbol()) \(String(format: "%.2f", self.data.currentRate))%", totalColor: .defaultText, totalFont: .bold12, targetString: self.data.changeSymbol(), targetColor: self.data.changeColor(), targetFont: .bold12))
     }
 }
 
