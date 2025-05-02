@@ -61,6 +61,9 @@ struct RateChartView: View {
                     .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [3]))
             }
         }
+        .onAppear {
+            self.selectedDate = self.getMinMaxDate().1
+        }
         .padding(16)
         .chartForegroundStyleScale { (type: RateType) -> Color in
             switch type {
