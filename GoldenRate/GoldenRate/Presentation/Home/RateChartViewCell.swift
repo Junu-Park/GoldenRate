@@ -48,8 +48,8 @@ final class RateChartViewCell: BaseCollectionViewCell {
         let titleLabelString = NSAttributedString(totalString: "금리 차트", totalColor: .defaultText, totalFont: .bold18, targetString: "금리", targetColor: .accent, targetFont: .bold18)
         self.titleLabel.attributedText = titleLabelString
         
-        self.subtitleLabel.text = "예금금리: 정기예금 12개월 기준"
-        self.subtitleLabel.font = .regular14
+        self.subtitleLabel.text = "* 2금융권 예금금리: 정기예금 12개월 기준"
+        self.subtitleLabel.font = .regular10
         self.subtitleLabel.textColor = .defaultGray
         
         self.rateChartViewController.view.backgroundColor = .clear
