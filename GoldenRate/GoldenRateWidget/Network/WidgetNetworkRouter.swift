@@ -28,7 +28,7 @@ enum WidgetNetworkRouter: APIRouter {
         case .firstBankRate:
             return "/StatisticSearch/\(apiKey)/json/kr/1/12/121Y002/M/\(yearAgoDate)/\(date)/BEABAA21"
         case .secondBankRate:
-            return "/StatisticSearch/\(apiKey)/json/kr/1/12/121Y004/M/\(yearAgoDate)/\(date)/BEBB1000"
+            return "/StatisticSearch/\(apiKey)/json/kr/1/12/121Y004/M/\(yearAgoDate)/\(date)/BEBBBE01"
         case .baseRate:
             return "/StatisticSearch/\(apiKey)/json/kr/1/12/722Y001/M/\(yearAgoDate)/\(date)/0101000"
         }
