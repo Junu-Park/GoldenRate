@@ -49,9 +49,9 @@ struct RateChartView: View {
                         y: .value("Rate", data.rate)
                     )
                     .foregroundStyle(by: .value("Type", data.type))
-                    .annotation(position: .bottomTrailing, alignment: .center, spacing: 8) {
+                    .annotation(position: .bottomTrailing, alignment: .center, spacing: 4) {
                         Text(String(format: "%.2f%%", data.rate))
-                            .foregroundStyle(Color(uiColor: UIColor.defaultText))
+                            .foregroundStyle(self.getColor(data.type))
                             .font(.bold10)
                     }
                 }
@@ -65,16 +65,7 @@ struct RateChartView: View {
             self.selectedDate = self.getMinMaxDate().1
         }
         .padding(16)
-        .chartForegroundStyleScale { (type: RateType) -> Color in
-            switch type {
-            case .base:
-                return .accent
-            case .first:
-                return .button
-            case .second:
-                return .text
-            }
-        }
+        .chartForegroundStyleScale { self.getColor($0) }
         .chartYAxis {
             AxisMarks { value in
                 AxisGridLine()
@@ -143,6 +134,17 @@ struct RateChartView: View {
 }
 
 extension RateChartView {
+    private func getColor(_ type: RateType) -> Color {
+        switch type {
+        case .base:
+            return .accent
+        case .first:
+            return .button
+        case .second:
+            return .text
+        }
+    }
+    
     private func getMinMaxRate() -> (Double, Double) {
         let filteredRateArr = Dictionary(grouping: rateDataList, by: { $0.type })
         
