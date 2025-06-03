@@ -24,7 +24,7 @@ enum ECOSRouter: APIRouter {
         
         switch self {
         case .bankDepositRate(let startDate, let endDate):
-            return "/StatisticSearch/\(apiKey)/json/kr/9/12/121Y002/M/\(startDate)/\(endDate)/BEABAA2118"
+            return "/StatisticSearch/\(apiKey)/json/kr/9/12/121Y002/M/\(startDate)/\(endDate)/BEABAA21"
         case .nonBankDepositRate(let startDate, let endDate):
             return "/StatisticSearch/\(apiKey)/json/kr/9/12/121Y004/M/\(startDate)/\(endDate)/BEBBBE01"
         case .baseRate(let startDate, let endDate):
