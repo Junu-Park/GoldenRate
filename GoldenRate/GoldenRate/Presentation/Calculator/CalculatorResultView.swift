@@ -7,8 +7,6 @@
 
 import UIKit
 
-import SnapKit
-
 final class CalculatorResultView: BaseView {
     
     private let containerView: UIView = UIView()
@@ -34,53 +32,58 @@ final class CalculatorResultView: BaseView {
     }
     
     override func configureLayout() {
-        self.containerView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        self.containerView.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.topAnchor)
+            $0.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            $0.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         }
         
-        self.principalTitleLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview().offset(16)
+        self.principalTitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.topAnchor, constant: 16)
+            $0.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
         }
-        self.principalValueLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().offset(-16)
-        }
-        
-        self.preTaxInterestTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(self.principalTitleLabel.snp.bottom).offset(8)
-            $0.leading.equalToSuperview().offset(16)
-        }
-        self.preTaxInterestValueLabel.snp.makeConstraints {
-            $0.top.equalTo(self.principalValueLabel.snp.bottom).offset(8)
-            $0.trailing.equalToSuperview().offset(-16)
+        self.principalValueLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.topAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
         }
         
-        self.taxTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(self.preTaxInterestTitleLabel.snp.bottom).offset(8)
-            $0.leading.equalToSuperview().offset(16)
+        self.preTaxInterestTitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.principalTitleLabel.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
         }
-        self.taxValueLabel.snp.makeConstraints {
-            $0.top.equalTo(self.preTaxInterestValueLabel.snp.bottom).offset(8)
-            $0.trailing.equalToSuperview().offset(-16)
-        }
-        
-        self.afterTaxInterestTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(self.taxTitleLabel.snp.bottom).offset(8)
-            $0.leading.equalToSuperview().offset(16)
-        }
-        self.afterTaxInterestValueLabel.snp.makeConstraints {
-            $0.top.equalTo(self.taxValueLabel.snp.bottom).offset(8)
-            $0.trailing.equalToSuperview().offset(-16)
+        self.preTaxInterestValueLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.principalValueLabel.bottomAnchor, constant: 8)
+            $0.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
         }
         
-        self.totalTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(self.afterTaxInterestTitleLabel.snp.bottom).offset(8)
-            $0.leading.equalToSuperview().offset(16)
-            $0.bottom.equalToSuperview().offset(-16)
+        self.taxTitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.preTaxInterestTitleLabel.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
         }
-        self.totalValueLabel.snp.makeConstraints {
-            $0.top.equalTo(self.afterTaxInterestValueLabel.snp.bottom).offset(8)
-            $0.trailing.bottom.equalToSuperview().offset(-16)
+        self.taxValueLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.preTaxInterestValueLabel.bottomAnchor, constant: 8)
+            $0.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
+        }
+        
+        self.afterTaxInterestTitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.taxTitleLabel.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
+        }
+        self.afterTaxInterestValueLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.taxValueLabel.bottomAnchor, constant: 8)
+            $0.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
+        }
+        
+        self.totalTitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.afterTaxInterestTitleLabel.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
+            $0.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
+        }
+        self.totalValueLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.afterTaxInterestValueLabel.bottomAnchor, constant: 8)
+            $0.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
+            $0.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
         }
     }
     
