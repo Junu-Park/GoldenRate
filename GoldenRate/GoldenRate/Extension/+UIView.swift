@@ -19,4 +19,10 @@ extension UIView {
         self.layer.shadowOffset = .zero
         self.layer.shadowColor = UIColor.defaultText.cgColor
     }
+    
+    func setConstraints(@ConstraintsBuilder constraintsClosure: (UIView) -> [NSLayoutConstraint]) {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = constraintsClosure(self)
+        NSLayoutConstraint.activate(constraints)
+    }
 }
