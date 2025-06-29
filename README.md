@@ -8,7 +8,7 @@
 ---
 
 ## 📱 소개
-**금니**에서는 최근 기준금리, 1금융권과 2금융권 예적금 금리 정보를 차트로 한눈에 볼 수 있고,  
+**금니**는 최근 기준금리 / 1금융권 / 2금융권 금리 정보를 차트로 한눈에 볼 수 있고,  
 원하는 조건에 맞는 예적금 상품을 쉽게 찾을 수 있는 앱입니다.
 
 - ⭐️ 최근 3가지 금리(기준금리, 1금융, 2금융) 차트
@@ -19,9 +19,24 @@
 
 ---
 
+## 📸 스크린샷
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/69c6f17f-0b95-4232-b7be-187ac631b6cb" width="19%">
+  <img src="https://github.com/user-attachments/assets/12b2c6d2-f668-4718-acf1-08109ca6168b" width="19%">
+  <img src="https://github.com/user-attachments/assets/e84b75ba-f9b8-486f-b2c5-86d046793287" width="19%">
+  <img src="https://github.com/user-attachments/assets/e67c47dd-bf4c-46a9-8a27-a73b193ec90f" width="19%">
+  <img src="https://github.com/user-attachments/assets/67bb43a4-9ba2-4033-b372-466e98542756" width="19%">
+</div>
+
+---
+
 ## 🛠 개발 정보
-- ⏰ 개발 기간: 2025.03.25 ~ 2025.04.06
+- ⏰ 핵심 개발 기간: 2025.03.25 ~ 2025.04.06
 - 👨‍💻 개발 인원: iOS 1명
 - 📱 최소 지원 버전: iOS 16.0+
+
+---
+
+## 📚 기술 스택
 
 ---
