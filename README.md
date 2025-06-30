@@ -45,6 +45,7 @@
   - SnapKit -> **NSLayoutConstraint** (진행 중)
 ### **SkeletonView를 통한 비동기 네트워크 지연 구간에서 사용자 경험 공백을 최소화**
   - **Core Animation 기반 Layer를 직접 구현**
+<img src="https://github.com/user-attachments/assets/2ae0d091-948d-4560-98d0-9d3b463b0768" width="300">
 
 ### **사용 기술 스택**
 |구분|기술 스택|
