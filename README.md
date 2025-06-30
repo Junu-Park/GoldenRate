@@ -42,16 +42,19 @@
 - **유지보수성과 호환성을 고려한 서드파티 라이브러리 의존성 최소화**
   - RxSwift -> **Combine**
   - Alamofire -> **URLSession**
-  - SnapKit -> **NSLayoutConstraint** (현재 수정 중)
+  - SnapKit -> **NSLayoutConstraint** (진행 중)
 ### **SkeletonView를 통한 비동기 네트워크 지연 구간에서 사용자 경험 공백을 최소화**
-  - Core Animation 기반 Layer를 직접 설계
+  - **Core Animation 기반 Layer를 직접 설계**
 
-### 파트별 기술 스택
-|파트|기술 스택|
-|:---:|:---:|
-|테스트1|테스트2|
-|테스트1|테스트2|
-|테스트1|테스트2|
+### 사용 기술 스택
+|구분|기술 스택|
+|:---|:---|
+|Async & Cocurrency|Combine, Swift Concurrency|
+|Architecture|MVVM, Router, DI/DIP|
+|Analytics|Firebase Analytics&Crashlytics|
+|Network|URLSession|
+|UX|SkeletonView(Core Animation), Dark Mode, Localization(진행 중)|
+|UI|UIKit(Code-based), WidgetKit, Charts(SwiftUI)|
 ### 
 
 ---
