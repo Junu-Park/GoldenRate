@@ -50,12 +50,12 @@
 ### **사용 기술 스택**
 |구분|기술 스택|
 |:---|:---|
-|Async & Cocurrency|Combine, Swift Concurrency|
+|Async & Concurrency|Combine, Swift Concurrency|
 |Architecture|MVVM, Router, DI/DIP|
-|Analytics|Firebase Analytics&Crashlytics|
+|Analytics|Firebase Analytics & Crashlytics|
 |Network|URLSession|
-|UX|SkeletonView(Core Animation), Dark Mode, Localization(진행 중)|
-|UI|UIKit(Code-based), WidgetKit, Charts(SwiftUI)|
+|UX|Skeleton View (Core Animation), Dark Mode, Localization(진행 중)|
+|UI|UIKit(Code-based), WidgetKit, SwiftUI Charts|
 ### 
 
 ---
