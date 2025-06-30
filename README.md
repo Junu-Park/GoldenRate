@@ -42,7 +42,7 @@
 - **유지보수성과 호환성을 고려한 Third-party 의존성 의존성 최소화**
   - RxSwift -> **Combine**
   - Alamofire -> **URLSession**
-  - SnapKit -> **NSLayoutConstraint** (전환 진행 중)
+  - SnapKit -> **NSLayoutConstraint** (진행 중)
 ### **Skeleton View를 설계를 통한 비동기 네트워크 지연 구간에서 사용자 경험 공백을 최소화**
   - **Core Animation 기반 Layer를 직접 구현**
 <img src="https://github.com/user-attachments/assets/2ae0d091-948d-4560-98d0-9d3b463b0768" width="300">
@@ -54,7 +54,7 @@
 | Architecture       | MVVM, Router, DI/DIP                          |
 | Analytics          | Firebase Analytics & Crashlytics              |
 | Network            | URLSession                                    |
-| UX                 | Skeleton View (Core Animation), Dark Mode, Localization(진행 중) |
+| UX                 | Skeleton View (Core Animation), Dark Mode     |
 | UI                 | UIKit (Code-based), WidgetKit, SwiftUI Charts |
 ### 
 
