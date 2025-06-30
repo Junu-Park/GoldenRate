@@ -44,9 +44,9 @@
   - Alamofire -> **URLSession**
   - SnapKit -> **NSLayoutConstraint** (진행 중)
 ### **SkeletonView를 통한 비동기 네트워크 지연 구간에서 사용자 경험 공백을 최소화**
-  - **Core Animation 기반 Layer를 직접 설계**
+  - **Core Animation 기반 Layer를 직접 구현**
 
-### 사용 기술 스택
+### **사용 기술 스택**
 |구분|기술 스택|
 |:---|:---|
 |Async & Cocurrency|Combine, Swift Concurrency|
