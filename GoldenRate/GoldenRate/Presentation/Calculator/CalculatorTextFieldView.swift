@@ -8,8 +8,6 @@
 import Combine
 import UIKit
 
-import SnapKit
-
 enum CalculatorTextFieldType: Equatable {
     case amount(productType: ProductType)
     case interestRate
@@ -59,20 +57,24 @@ final class CalculatorTextFieldView: BaseView {
     }
     
     override func configureLayout() {
-        self.titleLabel.snp.makeConstraints {
-            $0.leading.centerY.equalToSuperview()
-            $0.width.equalToSuperview().multipliedBy(0.2)
+        self.titleLabel.setConstraints {
+            $0.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+            $0.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            $0.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.2)
         }
-        self.textField.snp.makeConstraints {
-            $0.leading.equalTo(self.titleLabel.snp.trailing).offset(8)
-            $0.verticalEdges.equalToSuperview()
-            $0.height.equalTo(44)
+        
+        self.textField.setConstraints {
+            $0.leadingAnchor.constraint(equalTo: self.titleLabel.trailingAnchor, constant: 8)
+            $0.topAnchor.constraint(equalTo: self.topAnchor)
+            $0.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            $0.heightAnchor.constraint(equalToConstant: 44)
         }
-        self.unitLabel.snp.makeConstraints {
-            $0.leading.equalTo(self.textField.snp.trailing).offset(8)
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.width.equalTo(30)
+        
+        self.unitLabel.setConstraints {
+            $0.leadingAnchor.constraint(equalTo: self.textField.trailingAnchor, constant: 8)
+            $0.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            $0.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+            $0.widthAnchor.constraint(equalToConstant: 30)
         }
     }
     
