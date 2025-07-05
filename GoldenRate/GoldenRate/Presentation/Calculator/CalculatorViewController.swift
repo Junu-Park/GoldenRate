@@ -7,8 +7,6 @@
 
 import UIKit
 
-import SnapKit
-
 final class CalculatorViewController: BaseViewController {
     
     private let calculatorTypeSegment = CustomSegmentedControl<ProductType>(
@@ -175,115 +173,130 @@ final class CalculatorViewController: BaseViewController {
     }
     
     override func configureLayout() {
-        calculatorTypeSegment.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
-            make.horizontalEdges.equalToSuperview().inset(16)
-            make.height.equalTo(40)
+        
+        self.calculatorTypeSegment.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 16)
+            $0.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16)
+            $0.heightAnchor.constraint(equalToConstant: 40)
         }
-        amountTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(calculatorTypeSegment.snp.bottom).offset(32)
-            make.leading.equalToSuperview().offset(16)
-            make.width.equalToSuperview().multipliedBy(0.2)
+        
+        self.amountTitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.calculatorTypeSegment.bottomAnchor, constant: 32)
+            $0.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16)
+            $0.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.2)
         }
-        amountTextField.snp.makeConstraints { make in
-            make.centerY.equalTo(amountTitleLabel)
-            make.leading.equalTo(amountTitleLabel.snp.trailing).offset(16)
+        self.amountTextField.setConstraints {
+            $0.centerYAnchor.constraint(equalTo: self.amountTitleLabel.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: self.amountTitleLabel.trailingAnchor, constant: 16)
         }
-        amountUnitLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(amountTitleLabel)
-            make.leading.equalTo(amountTextField.snp.trailing).offset(8)
-            make.trailing.equalToSuperview().offset(-16)
+        self.amountUnitLabel.setConstraints {
+            $0.centerYAnchor.constraint(equalTo: self.amountTitleLabel.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: self.amountTextField.trailingAnchor, constant: 8)
+            $0.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16)
         }
-        rateTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(amountTitleLabel.snp.bottom).offset(32)
-            make.leading.equalToSuperview().offset(16)
-            make.width.equalToSuperview().multipliedBy(0.2)
+        
+        self.rateTitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.amountTitleLabel.bottomAnchor, constant: 32)
+            $0.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16)
+            $0.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.2)
         }
-        rateTextField.snp.makeConstraints { make in
-            make.centerY.equalTo(rateTitleLabel)
-            make.leading.equalTo(rateTitleLabel.snp.trailing).offset(16)
+        self.rateTextField.setConstraints {
+            $0.centerYAnchor.constraint(equalTo: self.rateTitleLabel.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: self.rateTitleLabel.trailingAnchor, constant: 16)
         }
-        rateUnitLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        rateUnitLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(rateTitleLabel)
-            make.leading.equalTo(rateTextField.snp.trailing).offset(8)
-            make.trailing.equalToSuperview().offset(-16)
+        self.rateUnitLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        self.rateUnitLabel.setConstraints {
+            $0.centerYAnchor.constraint(equalTo: self.rateTitleLabel.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: self.rateTextField.trailingAnchor, constant: 8)
+            $0.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16)
         }
-        periodTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(rateTitleLabel.snp.bottom).offset(32)
-            make.leading.equalToSuperview().offset(16)
-            make.width.equalToSuperview().multipliedBy(0.2)
+        
+        self.periodTitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.rateTitleLabel.bottomAnchor, constant: 32)
+            $0.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16)
+            $0.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.2)
         }
-        periodTextField.snp.makeConstraints { make in
-            make.centerY.equalTo(periodTitleLabel)
-            make.leading.equalTo(periodTitleLabel.snp.trailing).offset(16)
-            make.trailing.equalToSuperview().offset(-16)
+        self.periodTextField.setConstraints {
+            $0.centerYAnchor.constraint(equalTo: self.periodTitleLabel.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: self.periodTitleLabel.trailingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16)
         }
-        periodUnitSegment.snp.makeConstraints { make in
-            make.top.equalTo(periodTextField.snp.bottom).offset(4)
-            make.leading.equalTo(periodTitleLabel.snp.trailing).offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-            make.height.equalTo(32)
+        self.periodUnitSegment.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.periodTextField.bottomAnchor, constant: 4)
+            $0.leadingAnchor.constraint(equalTo: self.periodTitleLabel.trailingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16)
+            $0.heightAnchor.constraint(equalToConstant: 32)
         }
-        taxTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(periodUnitSegment.snp.bottom).offset(32)
-            make.leading.equalToSuperview().offset(16)
-            make.width.equalToSuperview().multipliedBy(0.2)
+        self.taxTitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.periodUnitSegment.bottomAnchor, constant: 32)
+            $0.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16)
+            $0.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.2)
         }
-        taxTypeSegment.snp.makeConstraints { make in
-            make.centerY.equalTo(taxTitleLabel)
-            make.leading.equalTo(taxTitleLabel.snp.trailing).offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-            make.height.equalTo(32)
+        self.taxTypeSegment.setConstraints {
+            $0.centerYAnchor.constraint(equalTo: self.taxTitleLabel.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: self.taxTitleLabel.trailingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16)
+            $0.heightAnchor.constraint(equalToConstant: 32)
         }
-        resultContainerView.snp.makeConstraints { make in
-            make.top.equalTo(taxTypeSegment.snp.bottom).offset(32)
-            make.horizontalEdges.equalToSuperview().inset(16)
-            make.bottom.lessThanOrEqualTo(self.view.safeAreaLayoutGuide).offset(-16)
+
+        self.resultContainerView.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.taxTypeSegment.bottomAnchor, constant: 32)
+            $0.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16)
+            $0.bottomAnchor.constraint(lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         }
-        principalTitleLabel.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview().offset(16)
+        
+        self.principalTitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.resultContainerView.topAnchor, constant: 16)
+            $0.leadingAnchor.constraint(equalTo: self.resultContainerView.leadingAnchor, constant: 16)
         }
-        principalValueLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
+        self.principalValueLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.resultContainerView.topAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: self.resultContainerView.trailingAnchor, constant: -16)
         }
-        preInterestTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(principalTitleLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(16)
+        
+        self.preInterestTitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.principalTitleLabel.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: self.resultContainerView.leadingAnchor, constant: 16)
         }
-        preInterestValueLabel.snp.makeConstraints { make in
-            make.top.equalTo(principalValueLabel.snp.bottom).offset(8)
-            make.trailing.equalToSuperview().offset(-16)
+        self.preInterestValueLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.principalValueLabel.bottomAnchor, constant: 8)
+            $0.trailingAnchor.constraint(equalTo: self.resultContainerView.trailingAnchor, constant: -16)
         }
-        taxTitleLabel2.snp.makeConstraints { make in
-            make.top.equalTo(preInterestTitleLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(16)
+        
+        self.taxTitleLabel2.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.preInterestTitleLabel.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: self.resultContainerView.leadingAnchor, constant: 16)
         }
-        taxRateLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(taxTitleLabel2)
-            make.leading.equalTo(taxTitleLabel2.snp.trailing).offset(4)
+
+        self.taxRateLabel.setConstraints {
+            $0.centerYAnchor.constraint(equalTo: self.taxTitleLabel2.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: self.taxTitleLabel2.trailingAnchor, constant: 4)
         }
-        taxValueLabel.snp.makeConstraints { make in
-            make.top.equalTo(preInterestValueLabel.snp.bottom).offset(8)
-            make.trailing.equalToSuperview().offset(-16)
+        self.taxValueLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.preInterestValueLabel.bottomAnchor, constant: 8)
+            $0.trailingAnchor.constraint(equalTo: self.resultContainerView.trailingAnchor, constant: -16)
         }
-        postInterestTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(taxTitleLabel2.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(16)
+        
+        self.postInterestTitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.taxTitleLabel2.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: self.resultContainerView.leadingAnchor, constant: 16)
         }
-        postInterestValueLabel.snp.makeConstraints { make in
-            make.top.equalTo(taxValueLabel.snp.bottom).offset(8)
-            make.trailing.equalToSuperview().offset(-16)
+        self.postInterestValueLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.taxValueLabel.bottomAnchor, constant: 8)
+            $0.trailingAnchor.constraint(equalTo: self.resultContainerView.trailingAnchor, constant: -16)
         }
-        totalTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(postInterestTitleLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(16)
-            make.bottom.equalToSuperview().offset(-16)
+        
+        self.totalTitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.postInterestTitleLabel.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: self.resultContainerView.leadingAnchor, constant: 16)
+            $0.bottomAnchor.constraint(equalTo: self.resultContainerView.bottomAnchor, constant: -16)
         }
-        totalValueLabel.snp.makeConstraints { make in
-            make.top.equalTo(postInterestValueLabel.snp.bottom).offset(8)
-            make.trailing.bottom.equalToSuperview().offset(-16)
+        self.totalValueLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.postInterestValueLabel.bottomAnchor, constant: 8)
+            $0.trailingAnchor.constraint(equalTo: self.resultContainerView.trailingAnchor, constant: -16)
+            $0.bottomAnchor.constraint(equalTo: self.resultContainerView.bottomAnchor, constant: -16)
         }
     }
     
