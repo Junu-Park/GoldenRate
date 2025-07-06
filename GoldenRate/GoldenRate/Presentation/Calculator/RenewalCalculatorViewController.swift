@@ -8,8 +8,6 @@
 import Combine
 import UIKit
 
-import SnapKit
-
 final class RenewalCalculatorViewController: BaseViewController {
 
     private let productTypeSegmentedControl: CustomSegmentedControl = CustomSegmentedControl<ProductType>(items: [.deposit, .saving])
@@ -38,43 +36,57 @@ final class RenewalCalculatorViewController: BaseViewController {
     }
     
     override func configureLayout() {
-        self.productTypeSegmentedControl.snp.makeConstraints {
-            $0.top.horizontalEdges.equalTo(self.view.safeAreaLayoutGuide)
-            $0.height.equalTo(44)
+        
+        self.productTypeSegmentedControl.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
+            $0.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
+            $0.heightAnchor.constraint(equalToConstant: 44)
         }
-        self.amountTextField.snp.makeConstraints {
-            $0.top.equalTo(self.productTypeSegmentedControl.snp.bottom).offset(32)
-            $0.horizontalEdges.equalToSuperview().inset(16)
+        
+        self.amountTextField.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.productTypeSegmentedControl.bottomAnchor, constant: 32)
+            $0.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         }
-        self.interestRateTextField.snp.makeConstraints {
-            $0.top.equalTo(self.amountTextField.snp.bottom).offset(16)
-            $0.horizontalEdges.equalToSuperview().inset(16)
+        
+        self.interestRateTextField.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.amountTextField.bottomAnchor, constant: 16)
+            $0.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         }
-        self.periodTextField.snp.makeConstraints {
-            $0.top.equalTo(self.interestRateTextField.snp.bottom).offset(16)
-            $0.horizontalEdges.equalToSuperview().inset(16)
+        
+        self.periodTextField.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.interestRateTextField.bottomAnchor, constant: 16)
+            $0.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         }
-        self.periodTypeSegmentedControl.snp.makeConstraints{
-            $0.top.equalTo(self.periodTextField.snp.bottom)
-            $0.leading.greaterThanOrEqualToSuperview().offset(16)
-            $0.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(40)
-            $0.width.equalToSuperview().multipliedBy(0.7)
+        
+        self.periodTypeSegmentedControl.setConstraints{
+            $0.topAnchor.constraint(equalTo: self.periodTextField.bottomAnchor)
+            $0.leadingAnchor.constraint(greaterThanOrEqualTo: $0.superview!.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: $0.superview!.trailingAnchor, constant: -16)
+            $0.heightAnchor.constraint(equalToConstant: 40)
+            $0.widthAnchor.constraint(equalTo: $0.superview!.widthAnchor, multiplier: 0.7)
         }
-        self.taxTitleLabel.snp.makeConstraints {
-            $0.centerY.equalTo(self.taxTypeSegmentedControl)
-            $0.leading.equalToSuperview().offset(16)
+        
+        self.taxTitleLabel.setConstraints {
+            $0.centerYAnchor.constraint(equalTo: self.taxTypeSegmentedControl.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: $0.superview!.leadingAnchor, constant: 16)
         }
-        self.taxTypeSegmentedControl.snp.makeConstraints {
-            $0.top.equalTo(self.periodTypeSegmentedControl.snp.bottom).offset(16)
-            $0.leading.equalTo(self.taxTitleLabel.snp.trailing).offset(32)
-            $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(44)
+        
+        self.taxTypeSegmentedControl.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.periodTypeSegmentedControl.bottomAnchor, constant: 16)
+            $0.leadingAnchor.constraint(equalTo: self.taxTitleLabel.trailingAnchor, constant: 32)
+            $0.trailingAnchor.constraint(equalTo: $0.superview!.trailingAnchor, constant: -16)
+            $0.heightAnchor.constraint(equalToConstant: 44)
         }
-        self.resultView.snp.makeConstraints {
-            $0.top.equalTo(self.taxTypeSegmentedControl.snp.bottom).offset(32)
-            $0.horizontalEdges.equalToSuperview().inset(16)
-            $0.bottom.lessThanOrEqualToSuperview()
+        
+        self.resultView.setConstraints {
+            $0.topAnchor.constraint(equalTo:self.taxTypeSegmentedControl.bottomAnchor, constant: 32)
+            $0.leadingAnchor.constraint(equalTo: $0.superview!.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: $0.superview!.trailingAnchor, constant: -16)
+            $0.bottomAnchor.constraint(lessThanOrEqualTo: $0.superview!.bottomAnchor)
         }
     }
     
