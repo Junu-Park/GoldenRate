@@ -9,8 +9,6 @@ import Combine
 import SwiftUI
 import UIKit
 
-import SnapKit
-
 final class HomeViewController: BaseViewController {
 
     private lazy var homeCollectionViewDataSource: UICollectionViewDiffableDataSource<HomeCollectionViewSection, HomeCollectionViewItem> = self.configureCollectionViewDataSource()
@@ -33,9 +31,11 @@ final class HomeViewController: BaseViewController {
     }
     
     override func configureLayout() {
-        self.homeCollectionView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.horizontalEdges.bottom.equalTo(self.view.safeAreaLayoutGuide)
+        self.homeCollectionView.setConstraints {
+            $0.topAnchor.constraint(equalTo: $0.superview!.topAnchor)
+            $0.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
+            $0.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         }
     }
     
