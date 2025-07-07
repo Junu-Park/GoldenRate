@@ -8,8 +8,6 @@
 import SwiftUI
 import UIKit
 
-import SnapKit
-
 final class RateChartViewCell: BaseCollectionViewCell {
     
     private let titleLabel: UILabel = UILabel()
@@ -22,19 +20,24 @@ final class RateChartViewCell: BaseCollectionViewCell {
     
     override func configureLayout() {
         self.titleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        self.titleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: $0.superview!.topAnchor, constant: 16)
+            $0.leadingAnchor.constraint(equalTo: $0.superview!.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: $0.superview!.trailingAnchor, constant: -16)
+        }
+        
         self.subtitleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        
-        self.titleLabel.snp.makeConstraints {
-            $0.top.horizontalEdges.equalToSuperview().inset(16)
+        self.subtitleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 4)
+            $0.leadingAnchor.constraint(equalTo: $0.superview!.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: $0.superview!.trailingAnchor, constant: -16)
         }
         
-        self.subtitleLabel.snp.makeConstraints {
-            $0.top.equalTo(self.titleLabel.snp.bottom).offset(4)
-            $0.horizontalEdges.equalToSuperview().inset(16)
-        }
-        self.rateChartViewController.view.snp.makeConstraints {
-            $0.top.equalTo(self.subtitleLabel.snp.bottom)
-            $0.horizontalEdges.bottom.equalToSuperview()
+        self.rateChartViewController.view.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.subtitleLabel.bottomAnchor)
+            $0.leadingAnchor.constraint(equalTo: $0.superview!.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $0.superview!.trailingAnchor)
+            $0.bottomAnchor.constraint(equalTo: $0.superview!.bottomAnchor)
         }
     }
     
