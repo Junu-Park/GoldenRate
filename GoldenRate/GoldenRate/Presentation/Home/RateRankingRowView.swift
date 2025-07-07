@@ -7,8 +7,6 @@
 
 import UIKit
 
-import SnapKit
-
 final class RateRankingRowView: BaseView {
     
     private let rankLabel: UILabel = UILabel()
@@ -25,26 +23,30 @@ final class RateRankingRowView: BaseView {
     }
     
     override func configureLayout() {
-        self.nameStackView.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
-        self.rankLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().offset(8)
+        self.rankLabel.setConstraints {
+            $0.centerYAnchor.constraint(equalTo: $0.superview!.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: $0.superview!.leadingAnchor, constant: 8)
         }
-        self.symbolImageView.snp.makeConstraints {
-            $0.leading.equalTo(self.rankLabel.snp.trailing).offset(8)
-            $0.centerY.equalToSuperview()
-            $0.size.equalTo(25)
+        
+        self.symbolImageView.setConstraints {
+            $0.leadingAnchor.constraint(equalTo: self.rankLabel.trailingAnchor, constant: 8)
+            $0.centerYAnchor.constraint(equalTo: $0.superview!.centerYAnchor)
+            $0.heightAnchor.constraint(equalToConstant: 25)
+            $0.widthAnchor.constraint(equalToConstant: 25)
         }
-        self.nameStackView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(8)
-            $0.bottom.equalToSuperview().offset(-8)
-            $0.leading.equalTo(self.symbolImageView.snp.trailing).offset(8)
+        
+        self.nameStackView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        self.nameStackView.setConstraints {
+            $0.topAnchor.constraint(equalTo: $0.superview!.topAnchor, constant: 8)
+            $0.bottomAnchor.constraint(equalTo: $0.superview!.bottomAnchor, constant: -8)
+            $0.leadingAnchor.constraint(equalTo: self.symbolImageView.trailingAnchor, constant: 8)
         }
-        self.rateLabel.snp.makeConstraints {
-            $0.leading.greaterThanOrEqualTo(self.nameStackView.snp.trailing)
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().offset(-8)
+        
+        self.rateLabel.setConstraints {
+            $0.leadingAnchor.constraint(greaterThanOrEqualTo: self.nameStackView.trailingAnchor)
+            $0.centerYAnchor.constraint(equalTo: $0.superview!.centerYAnchor)
+            $0.trailingAnchor.constraint(equalTo: $0.superview!.trailingAnchor, constant: -8)
         }
     }
     
