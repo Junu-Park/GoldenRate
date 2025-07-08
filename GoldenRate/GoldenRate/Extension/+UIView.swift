@@ -19,8 +19,6 @@ extension UIView {
         self.layer.shadowOffset = .zero
         self.layer.shadowColor = UIColor.defaultText.cgColor
     }
-    
-    
 }
 
 // Constraint 관련 extension

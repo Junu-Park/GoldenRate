@@ -8,7 +8,8 @@
 import UIKit
 
 extension Array where Element == NSLayoutYAxisAnchor {
-    func constraints(equalTo view: UIView, constant: CGFloat = 0) -> [NSLayoutConstraint] {
+    func constraints(equalTo view: UIView?, constant: CGFloat = 0) -> [NSLayoutConstraint] {
+        guard let view else { return [] }
         return [
             self[0].constraint(equalTo: view.topAnchor, constant: constant),
             self[1].constraint(equalTo: view.bottomAnchor, constant: -constant)
@@ -17,7 +18,9 @@ extension Array where Element == NSLayoutYAxisAnchor {
 }
 
 extension Array where Element == NSLayoutXAxisAnchor {
-    func constraints(equalTo view: UIView, constant: CGFloat = 0) -> [NSLayoutConstraint] {
+    func constraints(equalTo view: UIView?, constant: CGFloat = 0) -> [NSLayoutConstraint] {
+        guard let view else { return [] }
+        
         return [
             self[0].constraint(equalTo: view.leadingAnchor, constant: constant),
             self[1].constraint(equalTo: view.trailingAnchor, constant: -constant)
