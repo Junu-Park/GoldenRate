@@ -9,7 +9,15 @@ import UIKit
 
 @resultBuilder
 struct ConstraintsBuilder {
-    static func buildBlock(_ components: NSLayoutConstraint...) -> [NSLayoutConstraint] {
-        return components
+    static func buildBlock(_ components: [NSLayoutConstraint]...) -> [NSLayoutConstraint] {
+        return components.flatMap { $0 }
+    }
+    
+    static func buildExpression(_ expression: NSLayoutConstraint) -> [NSLayoutConstraint] {
+        return [expression]
+    }
+    
+    static func buildExpression(_ expression: [NSLayoutConstraint]) -> [NSLayoutConstraint] {
+        return expression
     }
 }
