@@ -22,6 +22,7 @@ struct ConstraintsBuilder {
     }
     
     static func buildExpression(_ expression: NSLayoutConstraint?) -> [NSLayoutConstraint] {
-        return []
+        guard let expression else { return [] }
+        return [expression]
     }
 }
