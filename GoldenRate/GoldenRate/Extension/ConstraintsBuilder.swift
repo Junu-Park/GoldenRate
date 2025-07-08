@@ -20,4 +20,8 @@ struct ConstraintsBuilder {
     static func buildExpression(_ expression: [NSLayoutConstraint]) -> [NSLayoutConstraint] {
         return expression
     }
+    
+    static func buildExpression(_ expression: NSLayoutConstraint?) -> [NSLayoutConstraint] {
+        return []
+    }
 }
