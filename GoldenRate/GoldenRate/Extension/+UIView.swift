@@ -20,6 +20,19 @@ extension UIView {
         self.layer.shadowColor = UIColor.defaultText.cgColor
     }
     
+    
+}
+
+// Constraint 관련 extension
+extension UIView {
+    var verticalAnchor: [NSLayoutYAxisAnchor] {
+        return [self.topAnchor, self.bottomAnchor]
+    }
+    
+    var horizontalAnchor: [NSLayoutXAxisAnchor] {
+        return [self.leadingAnchor, self.trailingAnchor]
+    }
+    
     func setConstraints(@ConstraintsBuilder constraintsClosure: (UIView) -> [NSLayoutConstraint]) {
         self.translatesAutoresizingMaskIntoConstraints = false
         let constraints = constraintsClosure(self)
