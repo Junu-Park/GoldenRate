@@ -7,16 +7,18 @@
 
 import UIKit
 
-extension NSLayoutYAxisAnchor {
+extension NSLayoutYAxisAnchor: NSLayoutAnchorName {
+    
     func constraint(equalTo view: UIView?, constant: CGFloat = 0) -> NSLayoutConstraint? {
         guard let view else { return nil }
+        guard let anchor = self.anchorName else { return nil }
         
-        switch self {
-        case view.topAnchor:
+        switch anchor {
+        case "top":
             return self.constraint(equalTo: view.topAnchor, constant: constant)
-        case view.bottomAnchor:
+        case "bottom":
             return self.constraint(equalTo: view.bottomAnchor, constant: constant)
-        case view.centerYAnchor:
+        case "centerY":
             return self.constraint(equalTo: view.centerYAnchor, constant: constant)
         default:
             return nil

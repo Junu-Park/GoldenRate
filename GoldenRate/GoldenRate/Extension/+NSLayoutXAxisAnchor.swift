@@ -7,16 +7,18 @@
 
 import UIKit
 
-extension NSLayoutXAxisAnchor {
+extension NSLayoutXAxisAnchor: NSLayoutAnchorName {
+    
     func constraint(equalTo view: UIView?, constant: CGFloat = 0) -> NSLayoutConstraint? {
         guard let view else { return nil }
+        guard let anchor = self.anchorName else { return nil }
         
-        switch self {
-        case view.leadingAnchor:
+        switch anchor {
+        case "leading":
             return self.constraint(equalTo: view.leadingAnchor, constant: constant)
-        case view.trailingAnchor:
+        case "trailing":
             return self.constraint(equalTo: view.trailingAnchor, constant: constant)
-        case view.centerXAnchor:
+        case "centerX":
             return self.constraint(equalTo: view.centerXAnchor, constant: constant)
         default:
             return nil
