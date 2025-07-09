@@ -7,8 +7,6 @@
 
 import UIKit
 
-import SnapKit
-
 final class ProductDetailView: BaseView {
     
     private let containerView: UIView = UIView()
@@ -35,61 +33,75 @@ final class ProductDetailView: BaseView {
     
     override func configureLayout() {
         
-        self.containerView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        self.symbolImage.snp.makeConstraints {
-            $0.top.leading.equalToSuperview().offset(16)
-            $0.size.equalTo(self.snp.width).multipliedBy(0.25)
-        }
-        self.bankName.snp.makeConstraints {
-            $0.top.equalTo(self.symbolImage.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().offset(16)
-        }
-        self.productName.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        self.productName.snp.makeConstraints {
-            $0.top.equalTo(self.bankName.snp.bottom).offset(8)
-            $0.leading.equalToSuperview().offset(16)
-        }
-        self.savingMethod.snp.makeConstraints {
-            $0.leading.equalTo(self.productName.snp.trailing).offset(4)
-            $0.trailing.lessThanOrEqualToSuperview().offset(-16)
-            $0.bottom.equalTo(self.productName)
-        }
-        self.HighestInterestRate.snp.makeConstraints {
-            $0.top.equalTo(self.productName.snp.bottom).offset(32)
-            $0.leading.equalToSuperview().offset(16)
-        }
-        self.baseInterestRate.snp.makeConstraints {
-            $0.top.equalTo(self.productName.snp.bottom).offset(32)
-            $0.leading.equalTo(self.containerView.snp.centerX)
-        }
-        self.joinTarget.snp.makeConstraints {
-            $0.top.equalTo(self.HighestInterestRate.snp.bottom).offset(32)
-            $0.leading.equalToSuperview().offset(16)
-        }
-        self.joinMethod.snp.makeConstraints {
-            $0.top.equalTo(self.joinTarget.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().offset(16)
-        }
-        self.maxAmount.snp.makeConstraints {
-            $0.top.equalTo(self.joinMethod.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().offset(16)
-        }
-        self.periodRatesTitle.snp.makeConstraints {
-            $0.top.equalTo(self.maxAmount.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().offset(-16)
-        }
-        self.periodRatesContainer.snp.makeConstraints {
-            $0.top.equalTo(self.periodRatesTitle.snp.bottom)
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().offset(-16)
-            $0.bottom.equalToSuperview().offset(-16)
-        }
-        self.periodRatesStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+         self.containerView.setConstraints {
+             $0.verticalAnchor.constraints(equalTo: $0.superview)
+             $0.horizontalAnchor.constraints(equalTo: $0.superview)
+         }
+        
+         self.symbolImage.setConstraints {
+             $0.topAnchor.constraint(equalTo: $0.superview, constant: 16)
+             $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+             $0.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.25)
+             $0.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.25)
+         }
+        
+         self.bankName.setConstraints {
+             $0.topAnchor.constraint(equalTo: self.symbolImage.bottomAnchor, constant: 16)
+             $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+         }
+        
+         self.productName.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+         self.productName.setConstraints {
+             $0.topAnchor.constraint(equalTo: self.bankName.bottomAnchor, constant: 8)
+             $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+         }
+        
+         self.savingMethod.setConstraints {
+             $0.leadingAnchor.constraint(equalTo: self.productName.trailingAnchor, constant: 4)
+             $0.trailingAnchor.constraint(lessThanOrEqualTo: $0.superview!.trailingAnchor, constant: -16)
+             $0.bottomAnchor.constraint(equalTo: self.productName)
+         }
+        
+         self.HighestInterestRate.setConstraints {
+             $0.topAnchor.constraint(equalTo: self.productName.bottomAnchor, constant: 32)
+             $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+         }
+        
+         self.baseInterestRate.setConstraints {
+             $0.topAnchor.constraint(equalTo: self.productName.bottomAnchor, constant: 32)
+             $0.leadingAnchor.constraint(equalTo: self.containerView.centerXAnchor)
+         }
+        
+         self.joinTarget.setConstraints {
+             $0.topAnchor.constraint(equalTo: self.HighestInterestRate.bottomAnchor, constant: 32)
+             $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+         }
+        
+         self.joinMethod.setConstraints {
+             $0.topAnchor.constraint(equalTo: self.joinTarget.bottomAnchor, constant: 16)
+             $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+         }
+        
+         self.maxAmount.setConstraints {
+             $0.topAnchor.constraint(equalTo: self.joinMethod.bottomAnchor, constant: 16)
+             $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+         }
+        
+         self.periodRatesTitle.setConstraints {
+             $0.topAnchor.constraint(equalTo: self.maxAmount.bottomAnchor, constant: 16)
+             $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
+         }
+        
+         self.periodRatesContainer.setConstraints {
+             $0.topAnchor.constraint(equalTo: self.periodRatesTitle.bottomAnchor)
+             $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
+             $0.bottomAnchor.constraint(equalTo: $0.superview, constant: -16)
+         }
+        
+         self.periodRatesStackView.setConstraints {
+             $0.verticalAnchor.constraints(equalTo: $0.superview)
+             $0.horizontalAnchor.constraints(equalTo: $0.superview)
+         }
     }
     
     override func configureView() {
@@ -426,34 +438,34 @@ final class ProductDetailView: BaseView {
         
         containerView.addSubviews(periodLabel, rateTypeLabel, minRateLabel, maxRateLabel)
         
-        periodLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(12)
-            $0.leading.equalToSuperview().offset(16)
-            $0.width.equalTo(60)
+        periodLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: $0.superview, constant: 12)
+            $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+            $0.widthAnchor.constraint(equalToConstant: 60)
         }
         
         // 금리 타입이 존재하는 경우에만 표시
         if !rateType.isEmpty {
-            rateTypeLabel.snp.makeConstraints {
-                $0.top.equalTo(periodLabel.snp.bottom).offset(4)
-                $0.leading.equalTo(periodLabel)
-                $0.bottom.equalToSuperview().offset(-12)
+            rateTypeLabel.setConstraints {
+                $0.topAnchor.constraint(equalTo: periodLabel.bottomAnchor, constant: 4)
+                $0.leadingAnchor.constraint(equalTo: periodLabel)
+                $0.bottomAnchor.constraint(equalTo: $0.superview, constant: -12)
             }
         } else {
-            periodLabel.snp.makeConstraints {
-                $0.bottom.equalToSuperview().offset(-12)
+            periodLabel.setConstraints {
+                $0.bottomAnchor.constraint(equalTo: $0.superview, constant: -12)
             }
         }
         
-        minRateLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(periodLabel.snp.trailing).offset(16)
+        minRateLabel.setConstraints {
+            $0.centerYAnchor.constraint(equalTo: $0.superview)
+            $0.leadingAnchor.constraint(equalTo: periodLabel.trailingAnchor, constant: 16)
         }
         
-        maxRateLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(minRateLabel.snp.trailing).offset(16)
-            $0.trailing.lessThanOrEqualToSuperview().offset(-16)
+        maxRateLabel.setConstraints {
+            $0.centerYAnchor.constraint(equalTo: $0.superview)
+            $0.leadingAnchor.constraint(equalTo: minRateLabel.trailingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: $0.superview!.trailingAnchor, constant: -16)
         }
         
         return containerView
