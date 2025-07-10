@@ -40,33 +40,33 @@ final class RateRankingViewCell: BaseCollectionViewCell {
     }
     
     override func configureLayout() {
-        self.titleLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview().offset(16)
+        self.titleLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: $0.superview, constant: 16)
+            $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
         }
         
-        self.segmentedControl.snp.makeConstraints {
-            $0.top.equalTo(self.titleLabel.snp.bottom).offset(16)
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(32)
+        self.segmentedControl.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 16)
+            $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
+            $0.heightAnchor.constraint(equalToConstant: 32)
         }
         
-        self.rankingContainerView.snp.makeConstraints {
-            $0.top.equalTo(self.segmentedControl.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
+        self.rankingContainerView.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.segmentedControl.bottomAnchor)
+            $0.horizontalAnchor.constraints(equalTo: $0.superview)
+            $0.bottomAnchor.constraint(equalTo: $0.superview)
         }
         
         for (index, view) in rankingViews.enumerated() {
-            view.snp.makeConstraints {
-                $0.leading.trailing.equalToSuperview().inset(16)
-                
+            view.setConstraints {
+                $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
                 if index == 0 {
-                    $0.top.equalToSuperview().offset(16)
+                    $0.topAnchor.constraint(equalTo: $0.superview, constant: 16)
                 } else if index == 1 {
-                    $0.top.equalTo(self.rankingViews[index - 1].snp.bottom).offset(16)
+                    $0.topAnchor.constraint(equalTo: self.rankingViews[index - 1].bottomAnchor, constant: 16)
                 } else {
-                    $0.top.equalTo(self.rankingViews[index - 1].snp.bottom).offset(16)
-                    $0.bottom.equalToSuperview().offset(-16)
+                    $0.topAnchor.constraint(equalTo: self.rankingViews[index - 1].bottomAnchor, constant: 16)
+                    $0.bottomAnchor.constraint(equalTo: $0.superview, constant: -16)
                 }
             }
         }
