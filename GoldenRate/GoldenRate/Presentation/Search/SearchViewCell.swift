@@ -7,8 +7,6 @@
 
 import UIKit
 
-import SnapKit
-
 final class SearchViewCell: BaseCollectionViewCell {
     
     private let symbolImage: UIImageView = UIImageView()
@@ -22,36 +20,38 @@ final class SearchViewCell: BaseCollectionViewCell {
     }
     
     override func configureLayout() {
-        self.symbolImage.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
-            $0.centerY.equalToSuperview()
-            $0.size.equalTo(50)
-            $0.trailing.lessThanOrEqualTo(self.maxRateLabel.snp.leading)
+        self.symbolImage.setConstraints {
+            $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+            $0.centerYAnchor.constraint(equalTo: $0.superview)
+            $0.widthAnchor.constraint(equalToConstant: 50)
+            $0.heightAnchor.constraint(equalToConstant: 50)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: self.maxRateLabel.leadingAnchor)
         }
 
-        self.productNameLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
-            $0.leading.equalTo(self.symbolImage.snp.trailing).offset(8)
-            $0.trailing.lessThanOrEqualToSuperview().inset(8)
+        self.productNameLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: $0.superview, constant: 16)
+            $0.leadingAnchor.constraint(equalTo: self.symbolImage.trailingAnchor, constant: 8)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: $0.superview!.trailingAnchor, constant: -8)
         }
 
-        self.bankNameLabel.snp.makeConstraints {
-            $0.top.equalTo(self.productNameLabel.snp.bottom).offset(8)
-            $0.leading.equalTo(self.symbolImage.snp.trailing).offset(8)
-            $0.trailing.lessThanOrEqualToSuperview().inset(8)
+        self.bankNameLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.productNameLabel.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: self.symbolImage.trailingAnchor, constant: 8)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: $0.superview!.trailingAnchor, constant: -8)
         }
 
         self.baseRateLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        self.baseRateLabel.snp.makeConstraints {
-            $0.top.equalTo(self.bankNameLabel.snp.bottom).offset(8)
-            $0.leading.equalTo(self.symbolImage.snp.trailing).offset(8)
-            $0.trailing.lessThanOrEqualTo(self.maxRateLabel.snp.leading)
-            $0.bottom.equalToSuperview().offset(-16)
+        self.baseRateLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.bankNameLabel.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: self.symbolImage.trailingAnchor, constant: 8)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: self.maxRateLabel.leadingAnchor)
+            $0.bottomAnchor.constraint(equalTo: $0.superview, constant: -16)
         }
 
-        self.maxRateLabel.snp.makeConstraints {
-            $0.top.greaterThanOrEqualToSuperview()
-            $0.trailing.bottom.equalToSuperview().offset(-16)
+        self.maxRateLabel.setConstraints {
+            $0.topAnchor.constraint(greaterThanOrEqualTo: $0.superview!.topAnchor)
+            $0.trailingAnchor.constraint(equalTo: $0.superview, constant: -16)
+            $0.bottomAnchor.constraint(equalTo: $0.superview, constant: -16)
         }
     }
     
