@@ -25,4 +25,12 @@ struct ConstraintsBuilder {
         guard let expression else { return [] }
         return [expression]
     }
+    
+    static func buildEither(first component: [NSLayoutConstraint]) -> [NSLayoutConstraint] {
+        return component
+    }
+    
+    static func buildEither(second component: [NSLayoutConstraint]) -> [NSLayoutConstraint] {
+        return component
+    }
 }
