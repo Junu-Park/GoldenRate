@@ -12,6 +12,9 @@ final class CustomSegmentedControl<T: RawRepresentable>: UISegmentedControl wher
     let items: [T]
     private lazy var underline: UIView = UIView()
     
+    private var underlineLeadingConstraint: NSLayoutConstraint?
+    private var underlineWidthConstraint: NSLayoutConstraint?
+    
     init(items: [T], isDynamicSize: Bool = false) {
         self.items = items
         super.init(items: [])
@@ -38,10 +41,15 @@ final class CustomSegmentedControl<T: RawRepresentable>: UISegmentedControl wher
     }
     
     private func configureLayout() {
-        self.underline.snp.makeConstraints {
-            $0.bottom.equalToSuperview()
-            $0.height.equalTo(1.5)
-            $0.width.leading.equalTo(0)
+        
+        self.underlineLeadingConstraint = underline.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0)
+        self.underlineWidthConstraint = underline.widthAnchor.constraint(equalToConstant: 0)
+        
+        self.underline.setConstraints {
+            self.underlineLeadingConstraint
+            $0.bottomAnchor.constraint(equalTo: $0.superview)
+            self.underlineWidthConstraint
+            $0.heightAnchor.constraint(equalToConstant: 1.5)
         }
     }
     
@@ -62,11 +70,12 @@ final class CustomSegmentedControl<T: RawRepresentable>: UISegmentedControl wher
     @discardableResult @objc private func changeSegment() -> Int {
         let view = self.subviews[self.selectedSegmentIndex]
         
-        UIView.animate(withDuration: 0.3) {
-            self.underline.snp.updateConstraints {
-                $0.leading.equalTo(view.frame.origin.x)
-                $0.width.equalTo(view.frame.width)
-            }
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else { return }
+            guard let leading = self.underlineLeadingConstraint, let width = self.underlineWidthConstraint else { return }
+            leading.constant = view.frame.origin.x
+            width.constant = view.frame.width
+            
             self.layoutIfNeeded()
         }
         
