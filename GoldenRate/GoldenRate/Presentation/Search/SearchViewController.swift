@@ -8,8 +8,6 @@
 import Combine
 import UIKit
 
-import SnapKit
-
 final class SearchViewController: BaseViewController {
 
     private let searchBar: UISearchBar = UISearchBar()
@@ -41,30 +39,36 @@ final class SearchViewController: BaseViewController {
     }
     
     override func configureLayout() {
-        self.searchBar.snp.makeConstraints {
-            $0.top.equalTo(self.view.safeAreaLayoutGuide)
-            $0.horizontalEdges.equalToSuperview().inset(16)
+        
+        self.searchBar.setConstraints {
+            $0.topAnchor.constraint(equalTo: $0.superview?.safeAreaLayoutGuide)
+            $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
         }
-        self.segmentedControl.snp.makeConstraints {
-            $0.top.equalTo(self.searchBar.snp.bottom).offset(8)
-            $0.horizontalEdges.equalToSuperview().inset(16)
-            $0.height.equalTo(40)
+        
+        self.segmentedControl.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor, constant: 8)
+            $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
+            $0.heightAnchor.constraint(equalToConstant: 40)
         }
-        self.filterSummaryLabel.snp.makeConstraints {
-            $0.top.equalTo(self.segmentedControl.snp.bottom).offset(8)
-            $0.leading.equalToSuperview().offset(16)
-            $0.height.equalTo(40)
+        
+        self.filterSummaryLabel.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.segmentedControl.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+            $0.heightAnchor.constraint(equalToConstant: 40)
         }
+        
         self.filterButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        self.filterButton.snp.makeConstraints {
-            $0.top.equalTo(self.segmentedControl.snp.bottom).offset(8)
-            $0.leading.equalTo(self.filterSummaryLabel.snp.trailing)
-            $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(40)
+        self.filterButton.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.segmentedControl.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: self.filterSummaryLabel.trailingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $0.superview, constant: -16)
+            $0.heightAnchor.constraint(equalToConstant: 40)
         }
-        self.searchCollectionView.snp.makeConstraints {
-            $0.top.equalTo(self.filterButton.snp.bottom).offset(8)
-            $0.bottom.horizontalEdges.equalToSuperview()
+        
+        self.searchCollectionView.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.filterButton.bottomAnchor, constant: 8)
+            $0.horizontalAnchor.constraints(equalTo: $0.superview)
+            $0.bottomAnchor.constraint(equalTo: $0.superview)
         }
     }
     
