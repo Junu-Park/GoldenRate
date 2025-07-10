@@ -24,4 +24,20 @@ extension NSLayoutYAxisAnchor: NSLayoutAnchorName {
             return nil
         }
     }
+    
+    func constraint(equalTo safeArea: UILayoutGuide?, constant: CGFloat = 0) -> NSLayoutConstraint? {
+        guard let safeArea else { return nil }
+        guard let anchor = self.anchorName else { return nil }
+        
+        switch anchor {
+        case "top":
+            return self.constraint(equalTo: safeArea.topAnchor, constant: constant)
+        case "bottom":
+            return self.constraint(equalTo: safeArea.bottomAnchor, constant: constant)
+        case "centerY":
+            return self.constraint(equalTo: safeArea.centerYAnchor, constant: constant)
+        default:
+            return nil
+        }
+    }
 }

@@ -24,4 +24,20 @@ extension NSLayoutXAxisAnchor: NSLayoutAnchorName {
             return nil
         }
     }
+    
+    func constraint(equalTo safeArea: UILayoutGuide?, constant: CGFloat = 0) -> NSLayoutConstraint? {
+        guard let safeArea else { return nil }
+        guard let anchor = self.anchorName else { return nil }
+        
+        switch anchor {
+        case "leading":
+            return self.constraint(equalTo: safeArea.leadingAnchor, constant: constant)
+        case "trailing":
+            return self.constraint(equalTo: safeArea.trailingAnchor, constant: constant)
+        case "centerX":
+            return self.constraint(equalTo: safeArea.centerXAnchor, constant: constant)
+        default:
+            return nil
+        }
+    }
 }
