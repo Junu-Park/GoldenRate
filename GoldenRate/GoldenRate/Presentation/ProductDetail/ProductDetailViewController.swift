@@ -7,8 +7,6 @@
 
 import UIKit
 
-import SnapKit
-
 final class ProductDetailViewController: BaseViewController {
 
     private let scrollView: UIScrollView = UIScrollView()
@@ -34,13 +32,15 @@ final class ProductDetailViewController: BaseViewController {
     }
     
     override func configureLayout() {
-        self.scrollView.snp.makeConstraints {
-            $0.edges.equalTo(self.view.safeAreaLayoutGuide)
+        self.scrollView.setConstraints {
+            $0.horizontalAnchor.constraints(equalTo: $0.superview?.safeAreaLayoutGuide)
+            $0.verticalAnchor.constraints(equalTo: $0.superview?.safeAreaLayoutGuide)
         }
         
-        self.productDetailView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(16)
-            $0.width.equalToSuperview().offset(-32)
+        self.productDetailView.setConstraints {
+            $0.verticalAnchor.constraints(equalTo: $0.superview, constant: 16)
+            $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
+            $0.widthAnchor.constraint(equalTo: $0.superview!.widthAnchor, constant: -32)
         }
     }
     
