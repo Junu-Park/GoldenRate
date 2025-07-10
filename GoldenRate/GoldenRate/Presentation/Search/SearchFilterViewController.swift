@@ -8,7 +8,6 @@
 import UIKit
 
 import FirebaseAnalytics
-import SnapKit
 
 final class SearchFilterViewController: BaseViewController {
     
@@ -40,37 +39,40 @@ final class SearchFilterViewController: BaseViewController {
     }
     
     override func configureLayout() {
-        self.financialCompanyTypeTitle.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(32)
-            $0.horizontalEdges.equalToSuperview().offset(16)
+        self.financialCompanyTypeTitle.setConstraints {
+            $0.topAnchor.constraint(equalTo: $0.superview, constant: 32)
+            $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
         }
-        self.financialCompanyTypeFilter.snp.makeConstraints {
-            $0.top.equalTo(self.financialCompanyTypeTitle.snp.bottom).offset(8)
-            $0.horizontalEdges.equalToSuperview().inset(16)
-            $0.height.equalTo(40)
+        
+        self.financialCompanyTypeFilter.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.financialCompanyTypeTitle.bottomAnchor, constant: 8)
+            $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
+            $0.heightAnchor.constraint(equalToConstant: 40)
         }
-        self.interestRateTypeTitle.snp.makeConstraints {
-            $0.top.equalTo(self.financialCompanyTypeFilter.snp.bottom).offset(32)
-            $0.horizontalEdges.equalToSuperview().inset(16)
+        
+        self.interestRateTypeTitle.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.financialCompanyTypeFilter.bottomAnchor, constant: 32)
+            $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
         }
-        self.interestRateTypeFilter.snp.makeConstraints {
-            $0.top.equalTo(self.interestRateTypeTitle.snp.bottom).offset(8)
-            $0.horizontalEdges.equalToSuperview().inset(16)
-            $0.height.equalTo(40)
+        
+        self.interestRateTypeFilter.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.interestRateTypeTitle.bottomAnchor, constant: 8)
+            $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
+            $0.heightAnchor.constraint(equalToConstant: 40)
         }
-        self.productSortTypeTitle.snp.makeConstraints {
-            $0.top.equalTo(self.interestRateTypeFilter.snp.bottom).offset(32)
-            $0.horizontalEdges.equalToSuperview().inset(16)
+        self.productSortTypeTitle.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.interestRateTypeFilter.bottomAnchor, constant: 32)
+            $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
         }
-        self.productSortTypeFilter.snp.makeConstraints {
-            $0.top.equalTo(self.productSortTypeTitle.snp.bottom).offset(8)
-            $0.horizontalEdges.equalToSuperview().inset(16)
-            $0.height.equalTo(40)
+        self.productSortTypeFilter.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.productSortTypeTitle.bottomAnchor, constant: 8)
+            $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
+            $0.heightAnchor.constraint(equalToConstant: 40)
         }
-        self.applyButton.snp.makeConstraints {
-            $0.top.equalTo(self.productSortTypeFilter.snp.bottom).offset(32)
-            $0.horizontalEdges.equalToSuperview().inset(16)
-            $0.height.equalTo(50)
+        self.applyButton.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.productSortTypeFilter.bottomAnchor, constant: 32)
+            $0.horizontalAnchor.constraints(equalTo: $0.superview, constant: 16)
+            $0.heightAnchor.constraint(equalToConstant: 50)
         }
     }
     
