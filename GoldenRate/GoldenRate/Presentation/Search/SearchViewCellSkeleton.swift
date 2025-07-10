@@ -7,8 +7,6 @@
 
 import UIKit
 
-import SnapKit
-
 final class SearchViewCellSkeleton: BaseCollectionViewCell {
     
     private let symbolImageSkeleton: UIView = {
@@ -66,39 +64,40 @@ final class SearchViewCellSkeleton: BaseCollectionViewCell {
     
     override func configureLayout() {
         
-        self.symbolImageSkeleton.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
-            $0.centerY.equalToSuperview()
-            $0.size.equalTo(50)
+        self.symbolImageSkeleton.setConstraints {
+            $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+            $0.centerYAnchor.constraint(equalTo: $0.superview)
+            $0.widthAnchor.constraint(equalToConstant: 50)
+            $0.heightAnchor.constraint(equalToConstant: 50)
         }
         
-        self.productNameSkeleton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
-            $0.leading.equalTo(self.symbolImageSkeleton.snp.trailing).offset(8)
-            $0.width.equalTo(180)
-            $0.height.equalTo(20)
+        self.productNameSkeleton.setConstraints {
+            $0.topAnchor.constraint(equalTo: $0.superview, constant: 16)
+            $0.leadingAnchor.constraint(equalTo: self.symbolImageSkeleton.trailingAnchor, constant: 8)
+            $0.widthAnchor.constraint(equalToConstant: 180)
+            $0.heightAnchor.constraint(equalToConstant: 20)
         }
         
-        self.bankNameSkeleton.snp.makeConstraints {
-            $0.top.equalTo(self.productNameSkeleton.snp.bottom).offset(8)
-            $0.leading.equalTo(self.symbolImageSkeleton.snp.trailing).offset(8)
-            $0.width.equalTo(120)
-            $0.height.equalTo(18)
+        self.bankNameSkeleton.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.productNameSkeleton.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: self.symbolImageSkeleton.trailingAnchor, constant: 8)
+            $0.widthAnchor.constraint(equalToConstant: 120)
+            $0.heightAnchor.constraint(equalToConstant: 18)
         }
         
-        self.baseRateSkeleton.snp.makeConstraints {
-            $0.top.equalTo(self.bankNameSkeleton.snp.bottom).offset(8)
-            $0.leading.equalTo(self.symbolImageSkeleton.snp.trailing).offset(8)
-            $0.width.equalTo(100)
-            $0.height.equalTo(18)
-            $0.bottom.equalToSuperview().offset(-16)
+        self.baseRateSkeleton.setConstraints {
+            $0.topAnchor.constraint(equalTo: self.bankNameSkeleton.bottomAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: self.symbolImageSkeleton.trailingAnchor, constant: 8)
+            $0.bottomAnchor.constraint(equalTo: $0.superview, constant: -16)
+            $0.widthAnchor.constraint(equalToConstant: 100)
+            $0.heightAnchor.constraint(equalToConstant: 18)
         }
         
-        self.maxRateSkeleton.snp.makeConstraints {
-            $0.bottom.equalToSuperview().offset(-16)
-            $0.trailing.equalToSuperview().offset(-16)
-            $0.width.equalTo(120)
-            $0.height.equalTo(20)
+        self.maxRateSkeleton.setConstraints {
+            $0.trailingAnchor.constraint(equalTo: $0.superview, constant: -16)
+            $0.bottomAnchor.constraint(equalTo: $0.superview, constant: -16)
+            $0.widthAnchor.constraint(equalToConstant: 120)
+            $0.heightAnchor.constraint(equalToConstant: 20)
         }
     }
     
