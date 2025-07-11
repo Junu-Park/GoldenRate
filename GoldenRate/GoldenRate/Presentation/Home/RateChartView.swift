@@ -8,8 +8,6 @@
 import Charts
 import SwiftUI
 
-import FirebaseAnalytics
-
 struct RateChartView: View {
     
     @State private var rateDataList: [RateChartEntity]
