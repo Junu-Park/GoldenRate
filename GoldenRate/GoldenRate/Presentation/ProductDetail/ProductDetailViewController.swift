@@ -15,11 +15,13 @@ final class ProductDetailViewController: BaseViewController {
     init(data: DepositProductEntity) {
         super.init()
         self.productDetailView.setView(data: data)
+        self.configureNavigationBar(data: data)
     }
     
     init(data: SavingProductEntity) {
         super.init()
         self.productDetailView.setView(data: data)
+        self.configureNavigationBar(data: data)
     }
     
     override func viewDidLoad() {
@@ -54,5 +56,25 @@ final class ProductDetailViewController: BaseViewController {
         
         self.scrollView.showsVerticalScrollIndicator = false
         self.scrollView.alwaysBounceVertical = true
+    }
+    
+    private func configureNavigationBar(data: DepositProductEntity) {
+        let titleLabel: UILabel = UILabel()
+        titleLabel.text = "\(data.companyName) \(data.name)"
+        titleLabel.textColor = .text
+        titleLabel.font = .bold16
+        titleLabel.minimumScaleFactor = 0.7
+        titleLabel.adjustsFontSizeToFitWidth = true
+        self.navigationItem.titleView = titleLabel
+    }
+    
+    private func configureNavigationBar(data: SavingProductEntity) {
+        let titleLabel: UILabel = UILabel()
+        titleLabel.text = "\(data.companyName) \(data.name)"
+        titleLabel.textColor = .text
+        titleLabel.font = .bold16
+        titleLabel.minimumScaleFactor = 0.7
+        titleLabel.adjustsFontSizeToFitWidth = true
+        self.navigationItem.titleView = titleLabel
     }
 }
