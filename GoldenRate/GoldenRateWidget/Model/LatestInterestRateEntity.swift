@@ -50,7 +50,7 @@ struct LatestInterestRateEntity: Identifiable {
     
     static let mock: [LatestInterestRateEntity] = [
         LatestInterestRateEntity(rateType: .base, previousRate: 2.75, currentRate: 2.75),
-        LatestInterestRateEntity(rateType: .first, previousRate: 3.06, currentRate: 2.98),
+        LatestInterestRateEntity(rateType: .first, previousRate: 2.84, currentRate: 2.98),
         LatestInterestRateEntity(rateType: .second, previousRate: 3.30, currentRate: 3.10)
     ]
 }
