@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "금니 수정.png",
+      "filename" : "AppIcon.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "금니 수정 1.png",
+      "filename" : "AppIcon_Dark.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -25,7 +25,7 @@
           "value" : "tinted"
         }
       ],
-      "filename" : "금니 수정 2.png",
+      "filename" : "AppIcon_Tinted.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
