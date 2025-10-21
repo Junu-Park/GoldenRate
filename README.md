@@ -38,18 +38,7 @@
 
 ---
 
-## 📡 기술
-### **애플 프레임워크 중심 설계**
-- 유지보수성과 호환성을 고려한 Third-party 의존성 최소화
-  - RxSwift   ➡️ **Combine**
-  - Alamofire ➡️ **URLSession**
-  - SnapKit   ➡️ **NSLayoutConstraint**
- 
-### **Shimmer Skeleton UI를 통한 UI 지연 구간에서 사용자 공백 경험 최소화**
-- Core Animation(CABasicAnimation, CAGradientLayer) 기반으로 직접 구현
-<img src="https://github.com/user-attachments/assets/2ae0d091-948d-4560-98d0-9d3b463b0768" width="300">
-
-### **기술 스택**
+## 📚 기술 스택
 | 구분               | 기술 스택                                      |
 |--------------------|-----------------------------------------------|
 | 언어 및 UI| Swift (UIKit: Code-based)                 |
@@ -59,6 +48,18 @@
 | 시각화                 | Swift Charts     |
 | 위젯                 | WidgetKit |
 | 분석                 | Firebase Analytics & Crashlytics |
-###
+
+---
+
+## 💭 고려한 점
+### **애플 프레임워크 중심 설계**
+- 유지보수성과 호환성을 고려한 Third-party 의존성 최소화
+  - RxSwift   ➡️ **Combine**
+  - Alamofire ➡️ **URLSession**
+  - SnapKit   ➡️ **NSLayoutConstraint**
+ 
+### **Shimmer Skeleton UI를 통한 UI 지연 구간에서 사용자 공백 경험 최소화**
+- Core Animation(CABasicAnimation, CAGradientLayer) 기반으로 직접 구현
+<img src="https://github.com/user-attachments/assets/2ae0d091-948d-4560-98d0-9d3b463b0768" width="300">
 
 ---
