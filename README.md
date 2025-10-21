@@ -38,25 +38,27 @@
 
 ---
 
-## 📚 기술 스택
-### 애플 프레임워크 중심 설계
-- **유지보수성과 호환성을 고려한 Third-party 의존성 의존성 최소화**
-  - RxSwift -> **Combine**
-  - Alamofire -> **URLSession**
-  - SnapKit -> **NSLayoutConstraint** (진행 중)
-### **Skeleton View를 설계를 통한 비동기 네트워크 지연 구간에서 사용자 경험 공백을 최소화**
-  - **Core Animation 기반 Layer를 직접 구현**
+## 📡 기술
+### **애플 프레임워크 중심 설계**
+- 유지보수성과 호환성을 고려한 Third-party 의존성 최소화
+  - RxSwift   ➡️ **Combine**
+  - Alamofire ➡️ **URLSession**
+  - SnapKit   ➡️ **NSLayoutConstraint**
+ 
+### **Shimmer Skeleton UI를 통한 UI 지연 구간에서 사용자 공백 경험 최소화**
+- Core Animation(CABasicAnimation, CAGradientLayer) 기반으로 직접 구현
 <img src="https://github.com/user-attachments/assets/2ae0d091-948d-4560-98d0-9d3b463b0768" width="300">
 
-### **사용 기술 스택**
+### **기술 스택**
 | 구분               | 기술 스택                                      |
 |--------------------|-----------------------------------------------|
-| Async & Concurrency| Combine, Swift Concurrency                    |
-| Architecture       | MVVM, Router, DI/DIP                          |
-| Analytics          | Firebase Analytics & Crashlytics              |
-| Network            | URLSession                                    |
-| UX                 | Skeleton View (Core Animation), Dark Mode     |
-| UI                 | UIKit (Code-based), WidgetKit, SwiftUI Charts |
-### 
+| 언어 및 UI| Swift (UIKit: Code-based)                 |
+| 아키텍쳐       | MVVM                     |
+| 반응형 프로그래밍          | Combine             |
+| 네트워크            | URLSession                                    |
+| 시각화                 | Swift Charts     |
+| 위젯                 | WidgetKit |
+| 분석                 | Firebase Analytics & Crashlytics |
+###
 
 ---
