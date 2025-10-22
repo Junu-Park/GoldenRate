@@ -8,10 +8,11 @@
 ---
 
 ## 📱 소개
-**금니**는 최근 기준금리 / 1금융권 / 2금융권 금리 정보를 차트로 한눈에 볼 수 있고,  
+**금니**는 최근 기준금리 / 1금융권 / 2금융권 금리 정보를 차트로 한눈에 볼 수 있고,
 원하는 조건에 맞는 예적금 상품을 쉽게 찾을 수 있는 앱입니다.
 
-- ⭐️ 최근 3가지 금리(기준금리, 1금융, 2금융) 차트
+### 주요 기능
+- ⭐️ 최근 3가지 금리(기준금리, 1금융권, 2금융권) 차트
 - ⭐️ 예적금 상품 TOP3 랭킹
 - ⭐️ 예적금 상품 필터를 통한 맞춤 검색
 - ⭐️ 예적금 이율 계산기
@@ -39,27 +40,32 @@
 ---
 
 ## 📚 기술 스택
-| 구분               | 기술 스택                                      |
-|--------------------|-----------------------------------------------|
-| 언어 및 UI| Swift (UIKit: Code-based)                 |
-| 아키텍쳐       | MVVM                     |
-| 반응형 프로그래밍          | Combine             |
-| 네트워크            | URLSession                                    |
-| 시각화                 | Swift Charts     |
-| 위젯                 | WidgetKit |
-| 분석                 | Firebase Analytics & Crashlytics |
+| 구분 | 기술 스택 |
+|------|-----------|
+| 언어 및 UI | Swift (UIKit: Code-based) |
+| 아키텍처 | MVVM |
+| 반응형 프로그래밍 | Combine |
+| 네트워크 | URLSession |
+| 시각화 | Swift Charts |
+| 위젯 | WidgetKit |
+| 분석 | Firebase Analytics & Crashlytics |
 
 ---
 
 ## 💭 고려한 점
-### **애플 프레임워크 중심 설계**
-- 유지보수성과 호환성을 고려한 Third-party 의존성 최소화
-  - RxSwift   ➡️ **Combine**
-  - Alamofire ➡️ **URLSession**
-  - SnapKit   ➡️ **NSLayoutConstraint**
- 
-### **Shimmer Skeleton UI를 통한 UI 지연 구간에서 사용자 공백 경험 최소화**
-- Core Animation(CABasicAnimation, CAGradientLayer) 기반으로 직접 구현
-<img src="https://github.com/user-attachments/assets/2ae0d091-948d-4560-98d0-9d3b463b0768" width="300">
+
+### 애플 프레임워크 중심 설계
+유지보수성과 호환성을 고려한 Third-party 의존성 최소화
+- RxSwift → **Combine**
+- Alamofire → **URLSession**
+- SnapKit → **NSLayoutConstraint**
+
+### Shimmer Skeleton UI를 통한 사용자 공백 경험 최소화
+UI 지연 구간에서 사용자 경험 향상을 위해 Core Animation 기반의 Shimmer 효과 직접 구현
+- `CABasicAnimation`, `CAGradientLayer`를 활용한 커스텀 구현
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/2ae0d091-948d-4560-98d0-9d3b463b0768" width="300">
+</div>
 
 ---
