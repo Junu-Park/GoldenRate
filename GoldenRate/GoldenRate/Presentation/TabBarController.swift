@@ -52,7 +52,7 @@ final class TabBarController: UITabBarController {
         searchNC.tabBarItem = searchTab
         
         let calculatorVM = CalculatorViewModel()
-        let calculatorVC = RenewalCalculatorViewController(viewModel: calculatorVM)
+        let calculatorVC = CalculatorViewController(viewModel: calculatorVM)
         let calculatorTab = UITabBarItem(title: StringConstant.calculatorTabTitle.localized(), image: .percent, tag: 2)
         calculatorTab.setTitleTextAttributes([.font: UIFont.bold10], for: .normal)
         calculatorVC.tabBarItem = calculatorTab
