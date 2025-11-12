@@ -75,16 +75,19 @@ final class ProductDetailView: BaseView {
          self.joinTarget.setConstraints {
              $0.topAnchor.constraint(equalTo: self.HighestInterestRate.bottomAnchor, constant: 32)
              $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+             $0.trailingAnchor.constraint(equalTo: $0.superview, constant: -16)
          }
         
          self.joinMethod.setConstraints {
              $0.topAnchor.constraint(equalTo: self.joinTarget.bottomAnchor, constant: 16)
              $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+             $0.trailingAnchor.constraint(equalTo: $0.superview, constant: -16)
          }
         
          self.maxAmount.setConstraints {
              $0.topAnchor.constraint(equalTo: self.joinMethod.bottomAnchor, constant: 16)
              $0.leadingAnchor.constraint(equalTo: $0.superview, constant: 16)
+             $0.trailingAnchor.constraint(equalTo: $0.superview, constant: -16)
          }
         
          self.periodRatesTitle.setConstraints {
