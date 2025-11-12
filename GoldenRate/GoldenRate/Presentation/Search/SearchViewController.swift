@@ -34,6 +34,10 @@ final class SearchViewController: BaseViewController {
         super.viewDidLoad()
     }
     
+    override func viewWillLayoutSubviews() {
+        self.searchBar.setShadowBorderColor()
+    }
+    
     override func configureHierarchy() {
         self.view.addSubviews(self.searchBar, self.segmentedControl, self.filterSummaryLabel, self.filterButton, self.searchCollectionView)
     }

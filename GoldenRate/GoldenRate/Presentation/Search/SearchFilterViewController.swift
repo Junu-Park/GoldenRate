@@ -34,6 +34,12 @@ final class SearchFilterViewController: BaseViewController {
         super.viewDidLoad()
     }
     
+    override func viewWillLayoutSubviews() {
+        [self.financialCompanyTypeFilter, self.interestRateTypeFilter, self.productSortTypeFilter].forEach { view in
+            view.setShadowBorderColor()
+        }
+    }
+    
     override func configureHierarchy() {
         self.view.addSubviews(self.financialCompanyTypeTitle, self.financialCompanyTypeFilter, self.interestRateTypeTitle, self.interestRateTypeFilter, self.productSortTypeTitle, self.productSortTypeFilter, self.applyButton)
     }

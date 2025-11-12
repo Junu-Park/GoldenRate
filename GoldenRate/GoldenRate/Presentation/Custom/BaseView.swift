@@ -16,6 +16,17 @@ class BaseView: UIView, ConfigureProtocol {
         self.configureHierarchy()
         self.configureLayout()
         self.configureView()
+        if #available(iOS 17.0, *) {
+            self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, previousTraitCollection: UITraitCollection) in
+                self.setShadowBorderColor()
+            }
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if #unavailable(iOS 17.0) {
+            self.setShadowBorderColor()
+        }
     }
     
     private func configureDefaultSetting() {
