@@ -212,11 +212,14 @@ final class ProductDetailView: BaseView {
             .font: UIFont.bold16,  // 볼드체, 크기는 필요에 맞게 조정
             .foregroundColor: UIColor.defaultGray       // 파란색 또는 원하는 색상
         ]
-
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 4
         // 내용 스타일 속성 정의
         let contentAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.bold16,      // 일반 폰트
-            .foregroundColor: UIColor.defaultText         // 어두운 회색 또는 원하는 색상
+            .foregroundColor: UIColor.defaultText,         // 어두운 회색 또는 원하는 색상
+            .paragraphStyle: paragraphStyle
         ]
 
         // 가입 한도
@@ -325,11 +328,14 @@ final class ProductDetailView: BaseView {
             .font: UIFont.bold16,  // 볼드체, 크기는 필요에 맞게 조정
             .foregroundColor: UIColor.defaultGray       // 파란색 또는 원하는 색상
         ]
-
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 4
         // 내용 스타일 속성 정의
         let contentAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.bold16,      // 일반 폰트
-            .foregroundColor: UIColor.defaultText         // 어두운 회색 또는 원하는 색상
+            .foregroundColor: UIColor.defaultText,         // 어두운 회색 또는 원하는 색상
+            .paragraphStyle: paragraphStyle
         ]
 
         // 가입 한도
