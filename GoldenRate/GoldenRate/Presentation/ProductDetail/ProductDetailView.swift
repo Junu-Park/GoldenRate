@@ -119,6 +119,8 @@ final class ProductDetailView: BaseView {
         
         self.productName.font = .bold20
         self.productName.textColor = .defaultText
+        self.productName.minimumScaleFactor = 0.7
+        self.productName.adjustsFontSizeToFitWidth = true
         
         self.bankName.font = .bold16
         self.bankName.textColor = .defaultText
