@@ -105,7 +105,7 @@ extension HomeViewController {
     }
     
     private func configureCollectionViewDataSource() -> UICollectionViewDiffableDataSource<HomeCollectionViewSection, HomeCollectionViewItem> {
-        return .init(collectionView: self.homeCollectionView) { collectionView, indexPath, itemType in
+        return .init(collectionView: self.homeCollectionView) { [weak self] collectionView, indexPath, itemType in
             switch itemType {
             case .chart(let item):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RateChartViewCell.identifier, for: indexPath) as? RateChartViewCell else {
@@ -119,10 +119,25 @@ extension HomeViewController {
                 }
                 cell.setView(depositProducts: depositItem)
                 cell.setView(savingsProducts: savingItem)
-
+                cell.tapCell = { [weak self] productData in
+                    self?.navigateToProductDetail(with: productData)
+                }
                 return cell
             }
         }
+    }
+
+    private func navigateToProductDetail(with productData: SearchCollectionViewItem) {
+        let detailViewController: ProductDetailViewController
+        switch productData {
+        case .deposit(let data):
+            detailViewController = ProductDetailViewController(data: data)
+        case .saving(let data):
+            detailViewController = ProductDetailViewController(data: data)
+        default:
+            return
+        }
+        self.navigationController?.pushViewController(detailViewController, animated: true)
     }
     
     private func updateSnapshot(chartData: [RateChartEntity], depositData: [DepositProductEntity], savingData: [SavingProductEntity]) {

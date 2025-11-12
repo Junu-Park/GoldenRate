@@ -15,6 +15,8 @@ final class RateRankingRowView: BaseView {
     private let productNameLabel: UILabel = UILabel()
     private let bankNameLabel: UILabel = UILabel()
     private let rateLabel: UILabel = UILabel()
+
+    var tapRow: (() -> Void)?
     
     override func configureHierarchy() {
         self.nameStackView.addArrangedSubview(self.productNameLabel)
@@ -73,6 +75,14 @@ final class RateRankingRowView: BaseView {
         
         self.rateLabel.font = .bold16
         self.rateLabel.textColor = .text
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        self.addGestureRecognizer(tapGesture)
+        self.isUserInteractionEnabled = true
+    }
+
+    @objc private func handleTap() {
+        self.tapRow?()
     }
     
     func setView(rank: Int, data: DepositProductEntity) {

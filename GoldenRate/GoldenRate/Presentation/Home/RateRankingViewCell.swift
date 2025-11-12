@@ -13,7 +13,9 @@ final class RateRankingViewCell: BaseCollectionViewCell {
     private let segmentedControl: CustomSegmentedControl = CustomSegmentedControl(items: [ProductType.deposit, ProductType.saving])
     private let rankingContainerView = UIView()
     private var rankingViews: [RateRankingRowView] = []
-    
+
+    var tapCell: ((SearchCollectionViewItem) -> Void)?
+
     private var depositData: [DepositProductEntity] = [] {
         didSet {
             if self.segmentedControl.selectedSegmentIndex == 0 {
@@ -98,12 +100,18 @@ final class RateRankingViewCell: BaseCollectionViewCell {
     private func updateViewWithDepositData() {
         for (index, product) in self.depositData.enumerated() {
             self.rankingViews[index].setView(rank: index + 1, data: product)
+            self.rankingViews[index].tapRow = { [weak self] in
+                self?.tapCell?(.deposit(item: product))
+            }
         }
     }
     
     private func updateViewWithSavingData() {
         for (index, product) in self.savingData.enumerated() {
             self.rankingViews[index].setView(rank: index + 1, data: product)
+            self.rankingViews[index].tapRow = { [weak self] in
+                self?.tapCell?(.saving(item: product))
+            }
         }
     }
     
